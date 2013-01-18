@@ -13,7 +13,14 @@ var loader = '<img src="images/loader.png" width="75" height="75" />';
 // set all property links.
 $('a.property').live('click', function(){
 	var parcel_id = $(this).attr('rel');
-	$.fn.fethCagisProperyInfoByParcel(parcel_id);	
+	$.fn.fethCagisProperyInfoByParcel(parcel_id);
+});
+
+// set all property links.
+$('a.map').live('mouseover', function(){
+	var address = $(this).attr('rel');
+	//$.fn.fethCagisProperyInfoByParcel(parcel_id);
+	$.fn.fethCagisMapByParcel(address);
 });
 
 // Custom function to clear and repopulate default value of input fields.
@@ -44,25 +51,13 @@ $.fn.fetchCagis = function(url) {
 		// some initial varibles for function.
 		var action, parcel_id, location;
 		
-		// determine if page has rendered a map by class on html tag
-		/* 
-		var map = $('#map-results').hasClass('success');
-		*/
-		
-		// if map is true then run function to remove cagis scripts
-		/*
-		if(map){
-			$('#map-results').html("");
-			//$.fn.removeCagisScripts();
-		}
-		*/
-		
 		// get id of what button user clicked.
 		action = $(this).attr('class');
 		
 		// load preloader.
 		$('#results-title').html('Searching...');
 		$('#results-table').html(loader);
+		$('#results-map').html('');
 		
 		// build api call based on user action.
 		switch(action){
@@ -78,6 +73,14 @@ $.fn.fetchCagis = function(url) {
 				parcel_id = $(':input[name=parcel]').val();
 		}
 	});
+};
+
+$.fn.fethCagisMapByParcel = function(address) {
+	//$('#results-map').html('<iframe src="map.php?p='+parcel_id+'"></iframe>');
+	var markup = '<img src="http://maps.googleapis.com/maps/api/staticmap?center='+address+'&zoom=16&size=200x200&sensor=false">';
+		markup = markup + '<img src="http://maps.googleapis.com/maps/api/streetview?size=200x200&location='+address+'&sensor=false">';
+	$('#results-map').html(markup);
+
 };
 
 $.fn.fetchCagisGeometry = function(parcel_id) {
@@ -157,7 +160,7 @@ $.fn.searchCagisByLocation = function(location) {
 	        			$(this).find('STATE').text(),
 	        			$(this).find('ZIPCODE').text(),
 	        			$(this).find('PARCELID').text(),
-	        			'<a href="#" rel="'+$(this).find('X_INTP').text()+'-'+$(this).find('Y_INTP').text()+' class="map">View Map</a>'
+	        			'<a href="#" rel="'+$(this).find('ADDRWCITY').text()+'" class="map">Street View</a>'
 	        			
 	        			]);
 	        	});
@@ -244,7 +247,7 @@ $.fn.fetchCagisMapView = function(pid) {
 		async: false,
 		cache: false,
 		success: function(data) {
-			$('#map-results').html(data).addClass('success');
+			$('#result-maps').html(data).addClass('success');
 		}
 	});
 };

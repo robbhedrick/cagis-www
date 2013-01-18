@@ -60,8 +60,8 @@
 				<button class="btn-coords">Button</button>
 			</div>
 		</div>
-		<hr />
 		<h2 id="results-title"></h2>
 		<div id="results-table"></div>
+		<div id="results-map"></div>
 	</body>
 </html>
