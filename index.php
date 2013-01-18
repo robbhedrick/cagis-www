@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-		<script type="text/javascript" src="../scripts/jquery.data-tables.min.js"></script>
-		<script type="text/javascript" src="../scripts/jquery.custom.js"></script>
+		<script type="text/javascript" src="scripts/jquery.data-tables.min.js"></script>
+		<script type="text/javascript" src="scripts/jquery.custom.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
 				
@@ -16,7 +16,7 @@
 			});
 		</script>
 		<style type="text/css" title="currentStyle">
-			@import "../styles/data-table.css";
+			@import "styles/data-table.css";
 		</style>
 	</head>
 	<body>
