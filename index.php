@@ -17,10 +17,11 @@
 		</script>
 		<style type="text/css" title="currentStyle">
 			@import "styles/data-table.css";
+			@import "styles/custom.css";
 		</style>
 	</head>
 	<body>
-		<div class="boxes">
+		<div class="search-boxes">
 			<div class="box">
 				<label>Search By Address</label>
 				<input type="text" name="address" value="Enter Street Address" />
