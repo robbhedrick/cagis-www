@@ -1,3 +1,4 @@
-.search-boxes .box lablel {}
-.search-boxes .box input {}
-.search-boxes .box button {}
+.search-boxes .box {margin:0px;padding:5px;}
+.search-boxes .box label{display:block;font-size:1.5em;margin-bottom:5px;}
+.search-boxes .box input {height:20px;padding:0px;margin:0px;color:#8080FF;}
+.search-boxes .box button {background-color:#8080FF;border:1px solid #fff;color:#fff;height:25px;}
