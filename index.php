@@ -4,8 +4,28 @@
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script type="text/javascript" src="scripts/jquery.data-tables.min.js"></script>
 		<script type="text/javascript" src="scripts/jquery.custom.js"></script>
+		<script type="text/javascript" src="scripts/geo.js"  charset="utf-8"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
+				
+				if(geo_position_js.init()){
+					geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
+				}
+				else{
+					alert("Functionality not available");
+				}
+		
+				function success_callback(p)
+				{
+					//alert('lat='+p.coords.latitude.toFixed(2)+';lon='+p.coords.longitude.toFixed(2));
+					$(':input[name=latitude]').val(p.coords.latitude.toFixed(2));
+					$(':input[name=longitude]').val(p.coords.longitude.toFixed(2));
+				}
+				
+				function error_callback(p)
+				{
+					alert('error='+p.code);
+				}
 				
 				// set all inputs.
 				$(':input').clearOnFocus();
