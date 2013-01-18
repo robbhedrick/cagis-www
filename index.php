@@ -18,8 +18,9 @@
 				function success_callback(p)
 				{
 					//alert('lat='+p.coords.latitude.toFixed(2)+';lon='+p.coords.longitude.toFixed(2));
-					$(':input[name=latitude]').val(p.coords.latitude.toFixed(2));
-					$(':input[name=longitude]').val(p.coords.longitude.toFixed(2));
+					$(':input[name=latitude]').val(p.coords.latitude.toFixed(3));
+					$(':input[name=longitude]').val(p.coords.longitude.toFixed(3));
+					//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
 				}
 				
 				function error_callback(p)

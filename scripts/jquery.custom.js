@@ -157,7 +157,7 @@ $.fn.searchCagisByLocation = function(location) {
 	        			$(this).find('STATE').text(),
 	        			$(this).find('ZIPCODE').text(),
 	        			$(this).find('PARCELID').text(),
-	        			'<a href="#" rel="'+$(this).find('X_INTP').text()+'-'+$(this).find('Y_INTP').text()+' class="property">View Map</a>'
+	        			'<a href="#" rel="'+$(this).find('X_INTP').text()+'-'+$(this).find('Y_INTP').text()+' class="map">View Map</a>'
 	        			
 	        			]);
 	        	});
