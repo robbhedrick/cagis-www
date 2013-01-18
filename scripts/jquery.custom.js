@@ -222,7 +222,7 @@ $.fn.fethCagisProperyInfoByParcel = function(parcel_id) {
 				item_value
 			]);
 		});
-		var title = $.fn.getValueByKey(parcelAttributes, 'OWNAD1') + ' ' +  $.fn.getValueByKey(parcelAttributes, 'OWNAD2');
+		var title = $.fn.getValueByKey(parcelAttributes, 'ADDRNO') + ' ' +  $.fn.getValueByKey(parcelAttributes, 'ADDRST') + ' ' +  $.fn.getValueByKey(parcelAttributes, 'ADDRSF');
 		$('#results-title').html(title);
 		$('#results-table').html( '<table class="display" id="property-data-table"></table>' );
 	    $('#property-data-table').dataTable( {
