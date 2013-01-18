@@ -8,7 +8,7 @@
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  */
-var loader = '<img src="../images/loader.png" width="75" height="75" />';
+var loader = '<img src="images/loader.png" width="75" height="75" />';
 
 // set all property links.
 $('a.property').live('click', function(){
