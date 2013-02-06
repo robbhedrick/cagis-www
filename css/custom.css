@@ -1,0 +1,4 @@
+.search-boxes .box {margin:0px;padding:5px;}
+.search-boxes .box label{display:block;font-size:1.5em;margin-bottom:5px;}
+.search-boxes .box input {height:22px;padding:0px;margin:0px;color:#8080FF;border:1px solid #8080FF;}
+.search-boxes .box button {background-color:#8080FF;border:1px solid #fff;color:#fff;height:25px;}
