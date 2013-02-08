@@ -16,7 +16,7 @@ function success_callback(p){
 	//$(':input[name=latitude]').val(p.coords.latitude.toFixed(3));
 	//$(':input[name=longitude]').val(p.coords.longitude.toFixed(3));
 	//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
-	$('#results-title').html("You're latitude is [" + p.coords.latitude.toFixed(2) + "] and your longitude is [" + p.coords.longitude.toFixed(2) +"]");
+	$('#results').html("You're latitude is [" + p.coords.latitude.toFixed(2) + "] and your longitude is [" + p.coords.longitude.toFixed(2) +"]");
 }
 
 // GEO CALLBACK ERROR
@@ -104,7 +104,7 @@ function domReady() {
 		});	
 	};
 	
-	// Return value of an objects key name
+	// return value of an objects key name
 	$.fn.getValueByKey = function(obj, key) {
 		var res = false;
 		$.each(obj, function (i, item) {
@@ -115,39 +115,20 @@ function domReady() {
 		return res;
 	};
 					
-	// determing 
+	// this function will do some basic things to set and get the stage for search result. 
 	$.fn.search = function(url) {
 		return this.click(function(){
-			// some initial varibles for function.
-			var action, parcel_id, location, x_coord, y_coord, coord_str;
-			
-			// get id of what button user clicked.
-			action = $(this).attr('class');
-			
-			// load preloader.
+		
+			// set the stage
 			$('#results-map').html('');
 			$('#results-title').html('Searching...');
-			$('#results-table').html(loader);
+			$('#results').html(loader);
 			
-			// build api call based on user action.
-			switch(action){
-				case "btn-parcel":
-					parcel_id = $(':input[name=parcel]').val();
-					$.fn.getAddressesByParcelID(parcel_id);
-					break;
-				case "btn-address":
-					location = $(':input[name=address]').val();
-					$.fn.geoCodeLocator(location);	
-					break;
-				case "btn-coords":
-					x_coord = $(':input[name=latitude]').val();
-					y_coord = $(':input[name=longitude]').val();
-					coord_str = 'x='+x_coord+'&y='+y_coord;
-					$.fn.getPropertyReport(coord_str);
-					break;
-				default:
-					parcel_id = $(':input[name=parcel]').val();
-			}
+			// get value of field in search form.
+			var location = $(':input[name=location]').val();
+			
+			// calling this function will determine one or many results.
+			$.fn.geoCodeLocator(location);	
 		});
 	};
 	
@@ -184,7 +165,7 @@ function domReady() {
 		// Set stage
 		$('#results-title').html('Loading...');
 		$('#results-map').html('');
-		$('#results-table').html(loader);
+		$('#results').html(loader);
 		$('#map-dialog').html('');
 		
 		$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
@@ -192,87 +173,65 @@ function domReady() {
 				
 				$.fn.scrollToPageTitle();
 					
-				$(':input[name=parcel]').val(data.locationReportResult.ParcelQueryData.SelectedParcelID);
-				$(':input[name=address]').val(data.locationReportResult.AddressQueryData.AddressLocation);
-				$(':input[name=latitude]').val(data.locationReportResult.LocationQueryData.X_Coord);
-				$(':input[name=longitude]').val(data.locationReportResult.LocationQueryData.Y_Coord);
-					
 				var parcel_attributes = data.locationReportResult.ParcelQueryData.AudParcelAttributes.ParcelAttributes.ParcelAttribute;
 				var zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
 				
 				var parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
 				var zoning_desired = ["PHONE","BND_NAME","ADDRESS","ZONING","zoning_codedescription"];
+				
+				
+				// block 1: basic property information					
+				var block1 = '<div class="column one"><h2>Property Info</h2><table class="display" id="property-data-table-1">';
+					block1 = block1 + '<tbody><tr><th>Label</th><th>Value</th></tr>';
 					
-				$.each(parcel_attributes, function (i, item) {
-					
-					if($.inArray(item.Name,parcel_desired) != -1){
-						var item_label = item.Label;
-						var item_value = "";
-						if(item.Value){
-							item_value = item.Value;
+					$.each(parcel_attributes, function (i, item) {
+						
+						if($.inArray(item.Name,parcel_desired) != -1){
+							var item_label = item.Label;
+							var item_value = "";
+							if(item.Value){
+								item_value = item.Value;
+							}
+							block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
 						}
-						results.parcel.push([
-							item_label,
-							item_value
-						]);
-					}
+						
+					});
 					
-				});
+					block1 = block1 + '</tbody></table></div>';
+				
+				// block 2: property zoning and development information
+				var block2 = '<div class="column two"><h2>Zoning and Development Info</h2><table class="display" id="property-data-table-2">';
 					
-				$.each(zoning_attributes, function (i, item) {
-					if($.inArray(item.Name,zoning_desired) != -1){
-						var item_label = item.Label;
-						var item_value = "";
-						if(item.Value){
-							item_value = item.Value;
+					$.each(zoning_attributes, function (i, item) {
+						
+						if($.inArray(item.Name,parcel_desired) != -1){
+							var item_label = item.Label;
+							var item_value = "";
+							if(item.Value){
+								item_value = item.Value;
+							}
+							block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
 						}
-						results.zoning.push([
-							item_label,
-							item_value
-						]);
-					}
-				});
-										
-				var table_1 = '<div class="column one"><h2>Property Info</h2><table class="display" id="property-data-table-1"></table></div>';
-				var table_2 = '<div class="column two"><h2>Zoning and Development Info</h2><table class="display" id="property-data-table-2"></table></div>';
+						
+					});
+					
+					block2 = block2 = '</table></div>';
 					
 				$('#results-title').html(data.locationReportResult.AddressQueryData.AddressLocation);
 				$('#results-map').html(
-					
 					$.fn.createMaps(
-							true,
-							data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity,
-							data.locationReportResult.ParcelQueryData.SelectedParcelID
-						)
-					);
-					
-					$('#results-table').html(table_1+table_2);
-					
-					$('#property-data-table-1').dataTable({
-				        "aaData": results.parcel,
-				        "aoColumns": [{"sTitle": "Title" },{ "sTitle": "Value" }],
-				        "bPaginate": false,
-				    	"bLengthChange": false,
-				    	"bFilter": true,
-				    	"bSort": false,
-				    	"bInfo": false,
-				    	"bAutoWidth": false
-				    });
-				    
-				    $('#property-data-table-2').dataTable({
-				        "aaData": results.zoning,
-				        "aoColumns": [{"sTitle": "Title" },{ "sTitle": "Value" }],
-				        "bPaginate": false,
-				    	"bLengthChange": false,
-				    	"bFilter": true,
-				    	"bSort": false,
-				    	"bInfo": false,
-				    	"bAutoWidth": false
-				    });
+						true,
+						data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity,
+						data.locationReportResult.ParcelQueryData.SelectedParcelID
+					)
+				);
+				
+				// add blocks to page	
+				$('#results').html(block1+block2);
 				    
 			}else{
 				$('#results-title').html('No records found.');
-				$('#results-table').html('');
+				$('#results').html('');
 			} 
 		});
 	};
@@ -280,8 +239,7 @@ function domReady() {
 	// geoCodeLocator
 	$.fn.geoCodeLocator = function(location) {
 		
-		var results = {"records":[]};
-		var parcel_id, x_coords, y_coords, xml, markup, coord_str;
+		var results, title, block, parcel_id, x_coords, y_coords, xml, coord_str;
 		
 		// call jsonp
 		$.getJSON(service,{action: 'geoCodeLocator', location: location}, function(data){
@@ -299,36 +257,28 @@ function domReady() {
 					coord_str = 'x='+$(xml).find('X_COORD').text()+'&y='+$(xml).find('Y_COORD').text();
 					$.fn.getPropertyReport(coord_str);
 				}else{
+					$('#results-title').html('<h3>'+result_count+' Records Found</h3>');
+					
 		        	$(xml).find('AddressList').each(function(){
+		        		// get cagis x & y coordianants for propery query
 		        		coord_str = 'x='+$(this).find('X_COORD').text()+'&y='+$(this).find('Y_COORD').text();
-		        		results.records.push([
-		        			$(this).find('ADDRESS').text(),
-		        			$(this).find('BND_NAME').text(),
-		        			$(this).find('STATE').text(),
-		        			$(this).find('ZIPCODE').text(),
-		        			'<a href="#" rel="'+coord_str+'" class="report">View Report</a>'
-		        			]);
+		        		
+		        		// build display block
+		        		block = block + '<tr>';
+		        		block = block + '<td>' + $(this).find('ADDRESS').text() + '</td>';
+		        		block = block + '<td>' + $(this).find('BND_NAME').text() + '</td>';
+		        		block = block + '<td>' + $(this).find('STATE').text() + '</td>';
+		        		block = block + '<td>' + $(this).find('ZIPCODE').text() + '</td>';
+		        		block = block + '<td><a href="#" rel="' + coord_str + '" class="report">View Report</a></td>';
+		        		block = block + '</tr>';
 		        	});
 		        	
-		        	$('#results-title').html('<h3>'+result_count+' Records Found</h3>');
-		        	$('#results-map').html("");
-					$('#results-table').html('<table class="display" id="property-data-table"></table>');
+		        	results = title + block;
+					$('#results').html(results);
 					
-				    $('#property-data-table').dataTable( {
-				    	"sPaginationType": "full_numbers",
-				        "aaData": results.records,
-				        "aoColumns": [
-				            { "sTitle": "Address" },
-				            { "sTitle": "City" },
-				            { "sTitle": "State" },
-				            { "sTitle": "Zipcode" },
-				            { "sTitle": "" }
-				        ]
-				    });
 				}
 			}else{
-				$('#results-title').html('No records found.');
-				$('#results-table').html('');
+				$('#results').html('<h3>No records found.</h3>');
 			} 
 		});
 	};

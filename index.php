@@ -1,48 +1,31 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		
+	<head>		
 		<!-- CSS Libraries: -->
-		<link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.0/themes/vader/jquery-ui.css">
-		<link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
+		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+		
+		<!-- CSS Custom: -->
+		<link href="css/custom.css" rel="stylesheet">
 		
 		<!-- JS Libraries: -->
-		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js"></script>
-		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.0/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
-		
-		<!-- JS Custom: -->
-		<script type="text/javascript" src="js/geo.js"  charset="utf-8"></script>
-		<script type="text/javascript" src="js/app.js"></script>
+		<script type="text/javascript" src="js/lib/jquery.js"></script>
+		<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
 
-		<!-- CSS Custom: -->
-		<link rel="stylesheet" href="css/custom.css">
+		<!-- JS Custom: -->		
+		<script type="text/javascript" src="js/app.js"></script>
 		
+		<title>Cincinnati Area GIS</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
 	<body>
 		
-		<div class="box">
-			<label>Search By Address</label>
-			<input type="text" name="address" value="Enter Street Address" />
-			<button class="btn-address">Button</button>
-		</div>
-		
-		<div class="box">
-			<label>Search By Parcel</label>
-			<input type="text" name="parcel" value="Enter Parcel Id" />
-			<button class="btn-parcel">Button</button>
-		</div>
-		
-		<div class="box">
-			<label>Search By Coordinates</label>
-			<input type="text" name="latitude" value="Enter Latitude" />
-			<input type="text" name="longitude" value="Enter Longitude" />
-			<button class="btn-coords">Button</button>
-		</div>
-		
-		<div id="results-map"></div>
-		<h2 id="results-title"></h2>
-		<div id="results-table"></div>
+		<form id="search-form">
+			<input type="text" name="location" value="Enter Street Address" />
+			<button>Search</button>
+		</form>
+				
+		<div id="results"></div>
 		
 	</body>
 </html>
