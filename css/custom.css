@@ -1,4 +1,9 @@
-.search-boxes .box {margin:0px;padding:5px;}
-.search-boxes .box label{display:block;font-size:1.5em;margin-bottom:5px;}
-.search-boxes .box input {height:22px;padding:0px;margin:0px;color:#8080FF;border:1px solid #8080FF;}
-.search-boxes .box button {background-color:#8080FF;border:1px solid #fff;color:#fff;height:25px;}
+h3{font-size:28px;position:relative;top:1px;}
+h3.loader{background: url('/img/loader.png') no-repeat left;padding-left:34px;}
+
+div.box{
+    background-color: #BBD8E9;
+    border-radius: 3px 3px 3px 3px;
+    padding:14px;
+    margin-top:12px;
+}

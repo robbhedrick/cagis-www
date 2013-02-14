@@ -8,7 +8,6 @@
 // GLOBAL VARS
 var server = 'cagis.pluto.dev';
 var service = "http://" + server + "/jsonp.php?callback=?";
-var loader = '<img src="img/loader.gif" width="30" height="30" />';
 
 // GEO CALLBACK
 function success_callback(p){
@@ -120,8 +119,8 @@ function domReady() {
 		return this.submit(function(event){
 			event.preventDefault();
 			
-			var title = '<h3>Searching...</h3>';
-			$('#results').html(title + loader);
+			var title = '<h3 class="loader">Searching...</h3>';
+			$('#results').html(title);
 			
 			// get value of field in search form.
 			var location = $(':input[name=location]').val();
@@ -259,7 +258,6 @@ function domReady() {
 					block = block + '<th>City</th>';
 					block = block + '<th>State</th>';
 					block = block + '<th>Zipcode</th>';
-					block = block + '<th>&nbsp;</th>';
 					block = block + '</tr>';
 					
 		        	$(xml).find('AddressList').each(function(){
@@ -268,11 +266,10 @@ function domReady() {
 		        		
 		        		// build display block
 		        		block = block + '<tr>';
-		        		block = block + '<td>' + $(this).find('ADDRESS').text() + '</td>';
+		        		block = block + '<td><a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
 		        		block = block + '<td>' + $(this).find('BND_NAME').text() + '</td>';
 		        		block = block + '<td>' + $(this).find('STATE').text() + '</td>';
 		        		block = block + '<td>' + $(this).find('ZIPCODE').text() + '</td>';
-		        		block = block + '<td><a href="#" rel="' + coord_str + '" class="report">View Report</a></td>';
 		        		block = block + '</tr>';
 		        	});
 		        	
