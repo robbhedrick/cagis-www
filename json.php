@@ -21,12 +21,14 @@
         public $xcoords;
         public $ycoords;
         public $location;
+        public $owner;
         public $res;
 
         function __construct() {        	
         	// Define the SOAP client
         	$this->client1 = new SoapClient("http://cagisonline.hamilton-co.org/CagisGeoWebServicesV6/GeoParcelDataQueries.asmx?wsdl",array('trace' => 1));
         	$this->client2 = new SoapClient("http://cagisonline.hamilton-co.org/CagisGeoWebServicesV2010/GeoLocator.asmx?wsdl",array('trace' => 1));
+        	$this->client3 = new SoapClient("http://cagisonline.hamilton-co.org/CagisGeoWebServicesV2010/GeoParcelDataQueries.asmx?wsdl",array('trace' => 1));
         	
         	// Does action parame exist
         	if(isset($_GET['action'])){
@@ -43,6 +45,10 @@
 					case 'getPropertyMap':
 					  $this->xcoords = $_GET['xcoords'];
 					  $this->ycoords = $_GET['ycoords'];
+					  break;
+					case 'ownerLastName':
+					  $this->owner = $_GET['owner'];
+					  $this->res = $this->client3->SearchPropertyBy_OwnerLastName(array('OwnerLastName' =>  $this->owner, 'pagingIndex' => '1'));
 					  break;
 					default:
 					  $this->parcel_id = $_GET['parcel_id'];

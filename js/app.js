@@ -8,7 +8,7 @@
 // GLOBAL VARS
 var server = 'cagis.pluto.dev';
 var service = "http://" + server + "/jsonp.php?callback=?";
-var loader = '<img src="images/loader.png" width="36" height="36" />';
+var loader = '<img src="img/loader.gif" width="30" height="30" />';
 
 // GEO CALLBACK
 function success_callback(p){
@@ -116,19 +116,20 @@ function domReady() {
 	};
 					
 	// this function will do some basic things to set and get the stage for search result. 
-	$.fn.search = function(url) {
-		return this.click(function(){
-		
-			// set the stage
-			$('#results-map').html('');
-			$('#results-title').html('Searching...');
-			$('#results').html(loader);
+	$.fn.search = function() {
+		return this.submit(function(event){
+			event.preventDefault();
+			
+			var title = '<h3>Searching...</h3>';
+			$('#results').html(title + loader);
 			
 			// get value of field in search form.
 			var location = $(':input[name=location]').val();
 			
 			// calling this function will determine one or many results.
 			$.fn.geoCodeLocator(location);	
+			
+			return false;
 		});
 	};
 	
@@ -157,17 +158,13 @@ function domReady() {
 
 	// getPropertyReport
 	$.fn.getPropertyReport = function(strCoords) {
-	
 		
 		var results = {"parcel":[],"zoning":[],};
 		var coords = strCoords.split(",");
-		
-		// Set stage
-		$('#results-title').html('Loading...');
-		$('#results-map').html('');
-		$('#results').html(loader);
-		$('#map-dialog').html('');
-		
+				
+		title = '<h3>Loading...</h3>';
+		$('#results').html(title + loader);
+
 		$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
 			if(data.locationReportResult){
 				
@@ -230,8 +227,7 @@ function domReady() {
 				$('#results').html(block1+block2);
 				    
 			}else{
-				$('#results-title').html('No records found.');
-				$('#results').html('');
+				$('#results').html('<h3>No records found.</h3>');
 			} 
 		});
 	};
@@ -257,7 +253,14 @@ function domReady() {
 					coord_str = 'x='+$(xml).find('X_COORD').text()+'&y='+$(xml).find('Y_COORD').text();
 					$.fn.getPropertyReport(coord_str);
 				}else{
-					$('#results-title').html('<h3>'+result_count+' Records Found</h3>');
+					title = '<h3>'+result_count+' Records Found</h3>';
+					block = '<table><tbody><tr>';
+					block = block + '<th>Address</th>';
+					block = block + '<th>City</th>';
+					block = block + '<th>State</th>';
+					block = block + '<th>Zipcode</th>';
+					block = block + '<th>&nbsp;</th>';
+					block = block + '</tr>';
 					
 		        	$(xml).find('AddressList').each(function(){
 		        		// get cagis x & y coordianants for propery query
@@ -273,6 +276,8 @@ function domReady() {
 		        		block = block + '</tr>';
 		        	});
 		        	
+		        	block = block + '</tbody></table>';
+		        	
 		        	results = title + block;
 					$('#results').html(results);
 					
@@ -287,7 +292,7 @@ function domReady() {
 	$(':input').clear();
 		
 	// set all buttons.
-	$(':button').search();
+	$("#search-form").search();
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------/
 }
