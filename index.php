@@ -15,7 +15,6 @@
 		<script type="text/javascript" src="js/lib/jquery.js"></script>
 		<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
-		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2qJnw4jka8jrjXLWpRqd2qz5fHgxFo&sensor=false"></script>
 
 
 		<!-- JS Custom: -->		
@@ -34,6 +33,7 @@
 				 
 				 <div class="box span4">
 					 <div id="details"></div>
+					 <div id="map_canvas" style="width: 100%; height: 100%"></div>
 				 </div>
 				 
 				 <div class="box span4">

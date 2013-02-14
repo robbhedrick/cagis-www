@@ -16,7 +16,26 @@ function success_callback(p){
 	//$(':input[name=longitude]').val(p.coords.longitude.toFixed(3));
 	//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
 	$('#details').html("You're latitude is [" + p.coords.latitude.toFixed(2) + "] and your longitude is [" + p.coords.longitude.toFixed(2) +"]");
+	loadGooglMapScript();
 }
+
+// GOOGLE MAPS
+function initialize() {
+  var mapOptions = {
+    zoom: 8,
+    center: new google.maps.LatLng(-34.397, 150.644),
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  }
+  var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+}
+
+function loadGooglMapScript(coords) {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2qJnw4jka8jrjXLWpRqd2qz5fHgxFo&sensor=false&callback=initialize";
+  document.body.appendChild(script);
+}
+
 
 // GEO CALLBACK ERROR
 function error_callback(p) {
