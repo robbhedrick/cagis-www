@@ -15,7 +15,7 @@ function success_callback(p){
 	//$(':input[name=latitude]').val(p.coords.latitude.toFixed(3));
 	//$(':input[name=longitude]').val(p.coords.longitude.toFixed(3));
 	//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
-	$('#results').html("You're latitude is [" + p.coords.latitude.toFixed(2) + "] and your longitude is [" + p.coords.longitude.toFixed(2) +"]");
+	$('#details').html("You're latitude is [" + p.coords.latitude.toFixed(2) + "] and your longitude is [" + p.coords.longitude.toFixed(2) +"]");
 }
 
 // GEO CALLBACK ERROR
@@ -177,7 +177,7 @@ function domReady() {
 				
 				
 				// block 1: basic property information					
-				var block1 = '<div class="column one"><h2>Property Info</h2><table class="display" id="property-data-table-1">';
+				var block1 = '<div class="column one"><h2>Property Info</h2><table class="table" id="property-data-table-1">';
 					block1 = block1 + '<tbody><tr><th>Label</th><th>Value</th></tr>';
 					
 					$.each(parcel_attributes, function (i, item) {
@@ -253,12 +253,12 @@ function domReady() {
 					$.fn.getPropertyReport(coord_str);
 				}else{
 					title = '<h3>'+result_count+' Records Found</h3>';
-					block = '<table><tbody><tr>';
+					block = '<table class="table table-striped"><thead><tr>';
 					block = block + '<th>Address</th>';
 					block = block + '<th>City</th>';
 					block = block + '<th>State</th>';
 					block = block + '<th>Zipcode</th>';
-					block = block + '</tr>';
+					block = block + '</tr></thead><tbody>';
 					
 		        	$(xml).find('AddressList').each(function(){
 		        		// get cagis x & y coordianants for propery query
@@ -289,7 +289,7 @@ function domReady() {
 	$(':input').clear();
 		
 	// set all buttons.
-	$("#search-form").search();
+	$(".form-search").search();
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------/
 }

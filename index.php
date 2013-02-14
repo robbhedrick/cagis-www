@@ -15,6 +15,8 @@
 		<script type="text/javascript" src="js/lib/jquery.js"></script>
 		<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2qJnw4jka8jrjXLWpRqd2qz5fHgxFo&sensor=false"></script>
+
 
 		<!-- JS Custom: -->		
 		<script type="text/javascript" src="js/app.js"></script>
@@ -24,18 +26,18 @@
 			<div class="row-fluid">
 				
 				 <div class="box span4">
-					 <form id="search-form">
-						 <input type="text" name="location" value="Enter Street Address" />
-						 <button>Search</button>
+					 <form class="form-search">
+					 	<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
+						<button type="submit" class="btn">Search</button>
 					</form>
 				 </div>
 				 
-				 <div class="box span6">
-					 <div id="results"></div>
+				 <div class="box span4">
+					 <div id="details"></div>
 				 </div>
 				 
-				 <div class="box span2">
-					 <div id="details"></div>
+				 <div class="box span4">
+					 <div id="results"></div>
 				 </div>
 				 
 			</div>
