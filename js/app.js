@@ -46,16 +46,22 @@ function error_callback(p) {
 	alert('error='+p.code);
 }
  
-// DOM READY FUNCTION
-function domReady() {
+// jQuery
+$(function() {
 		
 	// View Report Links
-	$("a.report").on("click", function(){
-		var coord_str = $(this).attr("rel");
-		$.fn.getPropertyReport(coord_str);
+	$("body").on("click", "a.report", function(){
+		alert("REPORT");
+		//var coord_str = $(this).attr("rel");
+		//$.fn.getPropertyReport(coord_str);
 		return false;
 	});
 
+	// popover details
+	$("body").on("click", "a.btn-popover", function(){
+		$(this).popover('show');
+		return false;
+	});
 		
 	// Scrolls page back to search results header.
 	$.fn.scrollTo = function(ele) {
@@ -218,7 +224,7 @@ function domReady() {
 	// geoCodeLocator
 	$.fn.geoCodeLocator = function(location) {
 		
-		var results, title, block, parcel_id, x_coords, y_coords, xml, coord_str;
+		var results, title, block, parcel_id, x_coords, y_coords, xml, coord_str, popover_str;
 		
 		// call jsonp
 		$.getJSON(service,{action: 'geoCodeLocator', location: location}, function(data){
@@ -247,12 +253,20 @@ function domReady() {
 					
 		        	$(xml).find('AddressList').each(function(){
 		        		// get cagis x & y coordianants for propery query
-		        		coord_str = 'x='+$(this).find('X_COORD').text()+'&y='+$(this).find('Y_COORD').text();
+		        		coord_str = 'x=' + $(this).find('X_COORD').text() + '&y=' + $(this).find('Y_COORD').text();
+		        		popover_str = $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
 		        		
 		        		// build display block
 		        		block = block + '<tr>';
-		        		block = block + '<td class="data-btn visible-phone hidden-desktop hidden-tablet"><a class="btn" href="#"><i class="icon-th"></i></a></td>';
-		        		block = block + '<td class="data-address"><a href="#" data-toggle="tooltip" title="' + $(this).find('BND_NAME').text() + '" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
+		        		block = block + '<td class="data-btn visible-phone hidden-desktop hidden-tablet">';
+		        		block = block + '<a class="btn btn-popover" href="#"\
+		        						data-trigger="click"\
+		        						data-title="' + $(this).find('ADDRESS').text() + '"\
+		        						data-content="' + popover_str + '"\
+		        						data-animation="true" \
+		        						data-placement="right">';
+		        		block = block + '<i class="icon-th"></i></a></td>';
+		        		block = block + '<td class="data-address"><a href="#" data-toggle="tooltip" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
 		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
 		        		block = block + '<td class="data-state hidden-phone">' + $(this).find('STATE').text() + '</td>';
 		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
@@ -262,7 +276,9 @@ function domReady() {
 		        	block = block + '</tbody></table>';
 		        	
 		        	results = title + block;
+					
 					$('#results').html(results);
+					
 				}
 			}else{
 				$('#results').html('<h3>No records found.</h3>');
@@ -281,9 +297,9 @@ function domReady() {
 		
 	// set all buttons.
 	$(".form-search").search();
-
+	
 	// ------------------------------------------------------------------------------------------------------------------------------------------------/
-}
+});
 
 // Change meta viewport if IE moible 10 browser
 if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
@@ -299,6 +315,3 @@ if(geo_position_js.init()) {
 }else{
 	alert("Functionality not available");
 }
-
-// Call DOM READY FUNCTION
-$(domReady);
