@@ -14,7 +14,7 @@
 		
 		<!-- JS Libraries: -->
 		<script type="text/javascript" src="js/lib/jquery.js"></script>
-		<script type="text/javascript" src="js/lib/bootstrap.min.js"></script>
+		<script type="text/javascript" src="js/lib/bootstrap.js"></script>
 		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
 
 
