@@ -265,7 +265,7 @@ $(function() {
 		        						data-content="' + popover_str + '"\
 		        						data-animation="true" \
 		        						data-placement="right">';
-		        		block = block + '<i class="icon-th"></i></a></td>';
+		        		block = block + '<i class="icon-info-sign"></i></a></td>';
 		        		block = block + '<td class="data-address"><a href="#" data-toggle="tooltip" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
 		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
 		        		block = block + '<td class="data-state hidden-phone">' + $(this).find('STATE').text() + '</td>';
