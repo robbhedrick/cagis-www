@@ -283,6 +283,15 @@ function domReady() {
 	// ------------------------------------------------------------------------------------------------------------------------------------------------/
 }
 
+// Change meta viewport if IE moible 10 browser
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	var msViewportStyle = document.createElement("style");
+	msViewportStyle.appendChild(
+		document.createTextNode("@-ms-viewport{width:auto!important}")
+	);
+	document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+}
+
 if(geo_position_js.init()) {
 	geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
 }else{
