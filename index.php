@@ -3,6 +3,7 @@
 	<head>
 		<title>Cincinnati Area GIS</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
 		
 		<!-- CSS Libraries: -->
 		<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -28,12 +29,13 @@
 					 <form class="form-search">
 					 	<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
 						<button type="submit" class="btn">Search</button>
+						<img src="/img/loader.gif" class="loader"  style="display:none;"/ >
 					</form>
 				 </div>
 				 
 				 <div class="box span4">
 					 <div id="details"></div>
-					 <div id="map_canvas" style="width: 100%; height: 100%"></div>
+					 <div id="map_canvas" style="width: 274px; height: 274px"></div>
 				 </div>
 				 
 				 <div class="box span4">

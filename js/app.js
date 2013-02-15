@@ -8,6 +8,8 @@
 // GLOBAL VARS
 var server = 'cagis.pluto.dev';
 var service = "http://" + server + "/jsonp.php?callback=?";
+var my_latitude = "";
+var my_longitude = "";
 
 // GEO CALLBACK
 function success_callback(p){
@@ -15,15 +17,17 @@ function success_callback(p){
 	//$(':input[name=latitude]').val(p.coords.latitude.toFixed(3));
 	//$(':input[name=longitude]').val(p.coords.longitude.toFixed(3));
 	//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
-	$('#details').html("You're latitude is [" + p.coords.latitude.toFixed(2) + "] and your longitude is [" + p.coords.longitude.toFixed(2) +"]");
+	my_latitude = p.coords.latitude.toFixed(3);
+	my_longitude = p.coords.longitude.toFixed(3);
+	$('#details').html("You're latitude is [" + p.coords.latitude.toFixed(3) + "] and your longitude is [" + p.coords.longitude.toFixed(3) +"]");
 	loadGooglMapScript();
 }
 
 // GOOGLE MAPS
 function initialize() {
   var mapOptions = {
-    zoom: 8,
-    center: new google.maps.LatLng(-34.397, 150.644),
+    zoom: 18,
+    center: new google.maps.LatLng(my_latitude, my_longitude),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   }
   var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
@@ -105,9 +109,9 @@ function domReady() {
 	
 	
 	// Scrolls page back to search results header.
-	$.fn.scrollToPageTitle = function() {
+	$.fn.scrollTo = function(ele) {
 		$('html, body').animate({
-			scrollTop: $("#page-title").offset().top
+			scrollTop: $(ele).offset().top
 		}, 200);
 	};
 	
@@ -132,17 +136,29 @@ function domReady() {
 		});
 		return res;
 	};
+	
+	
+	// set loader icon
+	$.fn.loader = function(s) {
+		if(s){
+			$(':button').hide();	
+			$('img.loader').show();
+		}else{
+			$('img.loader').hide();
+			$(':button').show();	
+		}
+	};
 					
 	// this function will do some basic things to set and get the stage for search result. 
 	$.fn.search = function() {
 		return this.submit(function(event){
 			event.preventDefault();
 			
-			var title = '<h3 class="loader">Searching...</h3>';
-			$('#results').html(title);
-			
 			// get value of field in search form.
 			var location = $(':input[name=location]').val();
+			
+			// set loading true...
+			$.fn.loader(true);
 			
 			// calling this function will determine one or many results.
 			$.fn.geoCodeLocator(location);	
@@ -297,6 +313,11 @@ function domReady() {
 		        	results = title + block;
 					$('#results').html(results);
 					
+					// set loading false...
+					$.fn.loader(false);
+					
+					// scroll to results
+					$.fn.scrollTo("h3");
 				}
 			}else{
 				$('#results').html('<h3>No records found.</h3>');
