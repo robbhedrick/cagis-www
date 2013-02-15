@@ -56,58 +56,7 @@ function domReady() {
 		return false;
 	});
 	
-	// Dialog Links for Cagis
-	$('a.cagis').on('click', function(){
-		var parcel_id = $(this).attr('rel');
-		var wWidth = $(window).width();
-        var dWidth = wWidth * 0.9;
-        var wHeight = $(window).height();
-        var dHeight = wHeight * 0.9;
-        var cagis = '<iframe class="cagis-map" src="http://cagisonline.hamilton-co.org/CagisOnline/index.html?pid='+parcel_id+'"></iframe>';
-		var $dialog = $( "#map-dialog" )
-			.html(cagis)
-			.dialog({
-				autoOpen: false,
-				modal: true,
-				title: 'PARCEL No. '+parcel_id,
-				modal: { opacity: 0.1, background: "black" },
-				width: dWidth,
-				height: dHeight,
-				draggable: false,
-                resizable: false
-		});
-		$dialog.dialog('open');
-		return false;
-	});
-	
-	
-	// launch cagis map dialog window.
-	$('a.google').on('click', function(){
-		var address = $(this).attr('rel');
-		var wWidth = $(window).width();
-        var dWidth = wWidth * 0.9;
-        var wHeight = $(window).height();
-        var dHeight = wHeight * 0.9;
-        var google = '<iframe class="google-map" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q='+address;
-        	google = google + '&amp;aq=&amp;t=h&amp;ie=UTF8&amp;hq=&amp;hnear='+address;
-        	google = google + '&amp;z=19&amp;output=embed"></iframe>';
-		var $dialog = $( "#map-dialog" )
-			.html(google)
-			.dialog({
-				autoOpen: false,
-				modal: true,
-				title: address,
-				modal: { opacity: 0.1, background: "black" },
-				width: dWidth,
-				height: dHeight,
-				draggable: false,
-                resizable: false
-		});
-		$dialog.dialog('open');
-		return false;
-	});
-	
-	
+		
 	// Scrolls page back to search results header.
 	$.fn.scrollTo = function(ele) {
 		$('html, body').animate({
@@ -312,16 +261,16 @@ function domReady() {
 		        	
 		        	results = title + block;
 					$('#results').html(results);
-					
-					// set loading false...
-					$.fn.loader(false);
-					
-					// scroll to results
-					$.fn.scrollTo("h3");
 				}
 			}else{
 				$('#results').html('<h3>No records found.</h3>');
-			} 
+			}
+			
+			// set loading false...
+			$.fn.loader(false);
+					
+			// scroll to results
+			$.fn.scrollTo("h3");
 		});
 	};
 		

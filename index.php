@@ -22,26 +22,23 @@
 		<script type="text/javascript" src="js/app.js"></script>
 	</head>
 	<body>
-		<div class="container-fluid">
-			<div class="row-fluid">
-				
-				 <div class="box span4">
-					 <form class="form-search">
-					 	<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
-						<button type="submit" class="btn">Search</button>
-						<img src="/img/loader.gif" class="loader"  style="display:none;"/ >
-					</form>
-				 </div>
-				 
-				 <div class="box span4">
-					 <div id="details"></div>
-					 <div id="map_canvas" style="width: 274px; height: 274px"></div>
-				 </div>
-				 
-				 <div class="box span4">
-					 <div id="results"></div>
-				 </div>
-				 
+		<div class="row-fluid">
+			<div class="span12">
+				<h1>Cincinnati GIS</h1>
+				<div class="row-fluid">
+					<div class="box span6">
+						 <form class="form-search">
+						 	<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
+							<button type="submit" class="btn">Search</button>
+							<img src="/img/loader.gif" class="loader"  style="display:none;"/ >
+						</form>
+						<div id="results"></div>
+					</div>
+					<div class="box span6">
+						<div id="details"></div>
+					 	<div id="map_canvas" style="width: 274px; height: 274px"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
