@@ -3,7 +3,6 @@
 	<head>
 		<title>Cincinnati Area GIS</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		
 		<!-- CSS Libraries: -->
@@ -25,7 +24,16 @@
 	<body>
 		<div class="row-fluid">
 			<div class="span12">
-				<h1>Cincinnati GIS</h1>
+			    <div class="navbar">
+			    	<div class="navbar-inner">
+				    	<a class="brand" href="#">GAGIS</a>
+				    	<ul class="nav">
+					    	<li class="active"><a href="#">Home</a></li>
+					    	<li><a href="#">Permits</a></li>
+					    	<li><a href="#">Contact</a></li>
+					    </ul>
+					</div>
+			    </div>
 				<div class="row-fluid">
 					<div class="box span6">
 						 <form class="form-search">
@@ -37,7 +45,7 @@
 					</div>
 					<div class="box span6">
 						<div id="details"></div>
-					 	<div id="map_canvas" style="width: 274px; height: 274px"></div>
+					 	<div id="map_canvas"></div>
 					</div>
 				</div>
 			</div>

@@ -237,11 +237,11 @@ function domReady() {
 					$.fn.getPropertyReport(coord_str);
 				}else{
 					title = '<h3>'+result_count+' Records Found</h3>';
-					block = '<table class="table table-striped"><thead><tr>';
+					block = '<table class="table table-striped table-condensed"><thead><tr>';
 					block = block + '<th>Address</th>';
 					block = block + '<th>City</th>';
-					block = block + '<th>State</th>';
-					block = block + '<th>Zipcode</th>';
+					block = block + '<th class="hidden-phone">State</th>';
+					block = block + '<th class="hidden-phone">Zipcode</th>';
 					block = block + '</tr></thead><tbody>';
 					
 		        	$(xml).find('AddressList').each(function(){
@@ -252,8 +252,8 @@ function domReady() {
 		        		block = block + '<tr>';
 		        		block = block + '<td><a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
 		        		block = block + '<td>' + $(this).find('BND_NAME').text() + '</td>';
-		        		block = block + '<td>' + $(this).find('STATE').text() + '</td>';
-		        		block = block + '<td>' + $(this).find('ZIPCODE').text() + '</td>';
+		        		block = block + '<td class="hidden-phone">' + $(this).find('STATE').text() + '</td>';
+		        		block = block + '<td class="hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
 		        		block = block + '</tr>';
 		        	});
 		        	
