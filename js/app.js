@@ -55,7 +55,7 @@ function domReady() {
 		$.fn.getPropertyReport(coord_str);
 		return false;
 	});
-	
+
 		
 	// Scrolls page back to search results header.
 	$.fn.scrollTo = function(ele) {
@@ -237,9 +237,10 @@ function domReady() {
 					$.fn.getPropertyReport(coord_str);
 				}else{
 					title = '<h3>'+result_count+' Records Found</h3>';
-					block = '<table class="table table-striped table-condensed"><thead><tr>';
+					block = '<table class="table table-striped"><thead><tr>';
+					block = block + '<th class="visible-phone hidden-desktop hidden-tablet">&nbsp;</th>';
 					block = block + '<th>Address</th>';
-					block = block + '<th>City</th>';
+					block = block + '<th class="hidden-phone">City</th>';
 					block = block + '<th class="hidden-phone">State</th>';
 					block = block + '<th class="hidden-phone">Zipcode</th>';
 					block = block + '</tr></thead><tbody>';
@@ -250,10 +251,11 @@ function domReady() {
 		        		
 		        		// build display block
 		        		block = block + '<tr>';
-		        		block = block + '<td><a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
-		        		block = block + '<td>' + $(this).find('BND_NAME').text() + '</td>';
-		        		block = block + '<td class="hidden-phone">' + $(this).find('STATE').text() + '</td>';
-		        		block = block + '<td class="hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
+		        		block = block + '<td class="data-btn visible-phone hidden-desktop hidden-tablet"><a class="btn" href="#"><i class="icon-th"></i></a></td>';
+		        		block = block + '<td class="data-address"><a href="#" data-toggle="tooltip" title="' + $(this).find('BND_NAME').text() + '" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
+		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
+		        		block = block + '<td class="data-state hidden-phone">' + $(this).find('STATE').text() + '</td>';
+		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
 		        		block = block + '</tr>';
 		        	});
 		        	

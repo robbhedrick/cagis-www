@@ -5,9 +5,13 @@ div.box{
     margin-top:6px;
 }
 
+.table-striped tbody > tr:nth-child(2n+1) > td.data-btn{background-color:transparent;}
+
 #map_canvas{
 	width: 100%;
 	height: 100%;
-	max-width: 300px;
-	max-height: 300px;
+	max-width: 375px;
+	max-height: 375px;
+	min-width: 275px;
+	min-height: 275px;
 }
