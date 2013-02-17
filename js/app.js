@@ -19,7 +19,7 @@ function success_callback(p){
 	//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
 	my_latitude = p.coords.latitude.toFixed(3);
 	my_longitude = p.coords.longitude.toFixed(3);
-	$('#details').html("You're latitude is [" + p.coords.latitude.toFixed(3) + "] and your longitude is [" + p.coords.longitude.toFixed(3) +"]");
+	$('#details').html("<h3>You're location is:</h3><br /> " + p.coords.latitude.toFixed(3) + ", " + p.coords.longitude.toFixed(3));
 	loadGooglMapScript();
 }
 
@@ -59,7 +59,16 @@ $(function() {
 
 	// popover details
 	$("body").on("click", "a.btn-popover", function(){
-		$(this).popover('show');
+		var ele = $(this);
+		var elems = $("a.btn-popover"), count = elems.length;
+		if(count >= 1) {
+			$(elems).each(function(){
+				$(this).popover("destroy");
+				if (!--count) $(ele).popover("show");
+			});
+		} else {
+			$(ele).popover("show");
+		}
 		return false;
 	});
 		
@@ -244,7 +253,6 @@ $(function() {
 				}else{
 					title = '<h3>'+result_count+' Records Found</h3>';
 					block = '<table class="table table-striped"><thead><tr>';
-					block = block + '<th class="visible-phone hidden-desktop hidden-tablet">&nbsp;</th>';
 					block = block + '<th>Address</th>';
 					block = block + '<th class="hidden-phone">City</th>';
 					block = block + '<th class="hidden-phone">State</th>';
@@ -258,15 +266,14 @@ $(function() {
 		        		
 		        		// build display block
 		        		block = block + '<tr>';
-		        		block = block + '<td class="data-btn visible-phone hidden-desktop hidden-tablet">';
+		        		block = block + '<td class="data-address"><span class="address-data-link">';
+		        		block = block + '<a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></span>';
+		        		block = block + '<span class="more-info-popover visible-phone hidden-desktop hidden-tablet">';
 		        		block = block + '<a class="btn btn-popover" href="#"\
-		        						data-trigger="click"\
-		        						data-title="' + $(this).find('ADDRESS').text() + '"\
-		        						data-content="' + popover_str + '"\
-		        						data-animation="true" \
-		        						data-placement="right">';
-		        		block = block + '<i class="icon-info-sign"></i></a></td>';
-		        		block = block + '<td class="data-address"><a href="#" data-toggle="tooltip" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></td>';
+		        		data-title="' + $(this).find('ADDRESS').text() + '"\
+		        		data-content="' + popover_str + '"\
+		        		data-placement="left">';
+		        		block = block + '<i class="icon-info-sign"></i></a></span></td>';
 		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
 		        		block = block + '<td class="data-state hidden-phone">' + $(this).find('STATE').text() + '</td>';
 		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
