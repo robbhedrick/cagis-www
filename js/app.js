@@ -51,9 +51,9 @@ $(function() {
 		
 	// View Report Links
 	$("body").on("click", "a.report", function(){
-		alert("REPORT");
-		//var coord_str = $(this).attr("rel");
-		//$.fn.getPropertyReport(coord_str);
+		$("#modal").modal("show");
+		var coord_str = $(this).attr("rel");
+		$.fn.getPropertyReport(coord_str);
 		return false;
 	});
 
