@@ -161,12 +161,11 @@ $(function() {
 		var coords = strCoords.split(",");
 				
 		title = '<h3>Loading...</h3>';
-		$('#results').html(title + loader);
+		$('#modal div.modal-body').html(title);
 
 		$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
 			if(data.locationReportResult){
 				
-				$.fn.scrollToPageTitle();
 					
 				var parcel_attributes = data.locationReportResult.ParcelQueryData.AudParcelAttributes.ParcelAttributes.ParcelAttribute;
 				var zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
@@ -212,20 +211,20 @@ $(function() {
 					
 					block2 = block2 = '</table></div>';
 					
-				$('#results-title').html(data.locationReportResult.AddressQueryData.AddressLocation);
-				$('#results-map').html(
+				$('#modal div.modal-header h3').html(data.locationReportResult.AddressQueryData.AddressLocation);
+				/*$('#results-map').html(
 					$.fn.createMaps(
 						true,
 						data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity,
 						data.locationReportResult.ParcelQueryData.SelectedParcelID
 					)
-				);
+				);*/
 				
 				// add blocks to page	
-				$('#results').html(block1+block2);
+				$('#modal div.modal-body').html(title+block1+block2);
 				    
 			}else{
-				$('#results').html('<h3>No records found.</h3>');
+				$('#modal div.modal-body').html('<h3>No records found.</h3>');
 			} 
 		});
 	};
