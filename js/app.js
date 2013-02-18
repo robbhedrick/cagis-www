@@ -71,6 +71,11 @@ $(function() {
 		}
 		return false;
 	});
+	
+	$('body').on("click", "#report-tabs a", function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
 		
 	// Scrolls page back to search results header.
 	$.fn.scrollTo = function(ele) {
@@ -131,37 +136,13 @@ $(function() {
 		});
 	};
 	
-	$.fn.createMaps = function(google, address, parcel_id) {
-		var maps = '';
-			if(google){
-				// Google Satellite View
-				maps = maps + '<div class="map"><a class="google satellite" href="#" rel="'+address+'"><img src="http://maps.googleapis.com/maps/api/staticmap?center='+address;
-				maps = maps + '&markers=size:mid|color:red|'+address;
-				maps = maps + '&zoom=19&size=215x215&maptype=satellite&sensor=true"></a></div>';
-				
-				// Google Basic Map View
-				maps = maps + '<div class="map"><a class="google basic" href="#" rel="'+address+'"><img src="http://maps.googleapis.com/maps/api/staticmap?center='+address;
-				maps = maps + '&markers=size:mid|color:red|'+address;
-				maps = maps + '&zoom=18&size=215x215&sensor=true"></a></div>';
-				
-				// Google Street View
-				maps = maps + '<div class="map"><a class="google steeet" href="#" rel="'+address+'"><img src="http://maps.googleapis.com/maps/api/streetview?size=215x215&location='+address;
-				maps = maps + '&sensor=false"></a></div>';
-			}
-			// Dialog Link To Cagis Flash Maps
-			maps = maps + '<div class="cagis-msg">Click <a href="#" class="cagis" rel="'+parcel_id+'">here</a> to view the CAGIS interative map. Requires Adobe Flash player.</div>';	
-		
-		return maps;
-	};
-
 	// getPropertyReport
 	$.fn.getPropertyReport = function(strCoords) {
 		
 		var results = {"parcel":[],"zoning":[],};
 		var coords = strCoords.split(",");
-		var parcel_attributes, parcel_desired, zoning_attributes, zoning_desired;
+		var parcel_attributes, parcel_desired;
 				
-
 		$('#modal div.modal-body').html('<h3 class="loader">Loading...<h3/>');
 
 			$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
@@ -175,14 +156,21 @@ $(function() {
 						parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
 					}
 					
-					zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
-					zoning_desired = ["PHONE","BND_NAME","ADDRESS","ZONING","zoning_codedescription"];
+					var zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
+					var zoning_desired = ["PHONE","BND_NAME","ADDRESS","ZONING","zoning_codedescription"];
 					
-					
-					
-					// block 1: basic property information					
-					var block1 = '<div class="column one"><h2>Property Info</h2><table class="table" id="property-data-table-1">';
-						block1 = block1 + '<tbody><tr><th>Label</th><th>Value</th></tr>';
+					// add tabs:
+					var tabs = '<ul id="report-tabs" class="nav nav-tabs">';
+						tabs = tabs + '<li><a href="#tab1" data-toggle="tab">Parcel Info</a></li>';
+						tabs = tabs + '<li><a href="#tab2" data-toggle="tab">Zoning Info</a></li>';
+						tabs = tabs + '<li><a href="#tab3" data-toggle="tab">Maps</a></li>';
+						tabs = tabs + "</ul>";
+						
+					// tab1: basic property information					
+					var tab1 = '<div class="tab-pane active" id="tab1">';
+						tab1 = tab1 + '<table>';
+						tab1 = tab1 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
+						tab1 = tab1 + '<tbody>';
 						
 						$.each(parcel_attributes, function (i, item) {
 							
@@ -192,43 +180,44 @@ $(function() {
 								if(item.Value){
 									item_value = item.Value;
 								}
-								block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
+								tab1 = tab1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
 							}
 							
 						});
 						
-						block1 = block1 + '</tbody></table></div>';
+						tab1 = tab1 + '</tbody></table></div>';
 					
-					// block 2: property zoning and development information
-					var block2 = '<div class="column two"><h2>Zoning and Development Info</h2><table class="display" id="property-data-table-2">';
+					// tab2: basic property information					
+					var tab2 = '<div class="tab-pane" id="tab2">';
+						tab2 = tab2 + '<table>';
+						tab2 = tab2 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
+						tab2 = tab2 + '<tbody>';
 						
 						$.each(zoning_attributes, function (i, item) {
 							
-							if($.inArray(item.Name,parcel_desired) != -1){
+							if($.inArray(item.Name,zoning_desired) != -1){
 								var item_label = item.Label;
 								var item_value = "";
 								if(item.Value){
 									item_value = item.Value;
 								}
-								block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
+								tab2 = tab2 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
 							}
 							
 						});
 						
-						block2 = block2 = '</table></div>';
-						
+						tab2 = tab2 + '</tbody></table></div>';
+					
+					var tab3 = '<div class="tab-pane" id="tab3">GOOGLE MAPS GO HERE</div>';
+					
+					// Title
 					$('#modal div.modal-header h3').html(data.locationReportResult.AddressQueryData.AddressLocation);
-					/*$('#results-map').html(
-						$.fn.createMaps(
-							true,
-							data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity,
-							data.locationReportResult.ParcelQueryData.SelectedParcelID
-						)
-					);*/
 					
 					// add blocks to page	
-					$('#modal div.modal-body').html(block1+block2);
-				    
+					$('#modal div.modal-body').html(tabs+'<div class="tab-content">'+tab1+tab2+tab3+'</div>');
+					
+					$('#report-tabs a:first').tab('show');
+									    
 				}else{
 					$('#modal div.modal-body').html('<h3>No records found.</h3>');
 				}
