@@ -41,8 +41,8 @@
 						<li class="active">
 							<a href="#">Home</a>
 						</li>
-						<li><a href="#">Link</a></li>
-						<li><a href="#">Link</a></li>
+						<li><a href="#">Permits</a></li>
+						<li><a href="#">Resources</a></li>
 					</ul>
 					<form class="navbar-search">
 						<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
@@ -59,7 +59,10 @@
 						
 				<div class="row-fluid">
 					<div class="box span6">
-						<div id="results"></div>
+						<div id="results">
+							<h3>Cincinnati Area Geographic Information System</h3>
+							<p> Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh. Sed tempus risus at magna rhoncus ultrices. Nullam rhoncus ipsum eu massa interdum porttitor. Ut bibendum gravida massa eu condimentum. Sed risus lorem, pulvinar a rhoncus sagittis, fermentum et sapien. Aliquam eget pulvinar turpis. Aliquam non arcu dui. Quisque at tellus odio, et tristique quam. Morbi consequat iaculis tortor, ac consequat mauris molestie at. Aliquam non mi eu elit pharetra vehicula. Nam gravida placerat semper. Donec vulputate iaculis enim. Nam blandit quam a magna ornare pellentesque. Nulla nec justo justo, ut laoreet justo. </p>
+						</div>
 					</div>
 					<div class="box span6 hidden-phone">
 						<div id="details"></div>

@@ -19,7 +19,7 @@ function success_callback(p){
 	//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
 	my_latitude = p.coords.latitude.toFixed(3);
 	my_longitude = p.coords.longitude.toFixed(3);
-	$('#details').html("<h3>You're location is:</h3><br /> " + p.coords.latitude.toFixed(3) + ", " + p.coords.longitude.toFixed(3));
+	$('#details').html("<h3>You're Current Location</h3>");
 	loadGooglMapScript();
 }
 
@@ -159,74 +159,80 @@ $(function() {
 		
 		var results = {"parcel":[],"zoning":[],};
 		var coords = strCoords.split(",");
+		var parcel_attributes, parcel_desired, zoning_attributes, zoning_desired;
 				
-		title = '<h3>Loading...</h3>';
-		$('#modal div.modal-body').html(title);
 
-		$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
-			if(data.locationReportResult){
-				
+		$('#modal div.modal-body').html('<h3 class="loader">Loading...<h3/>');
+
+			$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
+				if(data.locationReportResult.ParcelQueryData){
 					
-				var parcel_attributes = data.locationReportResult.ParcelQueryData.AudParcelAttributes.ParcelAttributes.ParcelAttribute;
-				var zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
-				
-				var parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
-				var zoning_desired = ["PHONE","BND_NAME","ADDRESS","ZONING","zoning_codedescription"];
-				
-				
-				// block 1: basic property information					
-				var block1 = '<div class="column one"><h2>Property Info</h2><table class="table" id="property-data-table-1">';
-					block1 = block1 + '<tbody><tr><th>Label</th><th>Value</th></tr>';
+					if(data.locationReportResult.ParcelQueryData.isCondoProperty){
+						parcel_attributes = data.locationReportResult.ParcelQueryData.CondoParcelData.ListCondoUnits.CGParcelAttributes[2];
+						parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
+					}else{
+						parcel_attributes = data.locationReportResult.ParcelQueryData.AudParcelAttributes.ParcelAttributes.ParcelAttribute;
+						parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
+					}
 					
-					$.each(parcel_attributes, function (i, item) {
+					zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
+					zoning_desired = ["PHONE","BND_NAME","ADDRESS","ZONING","zoning_codedescription"];
+					
+					
+					
+					// block 1: basic property information					
+					var block1 = '<div class="column one"><h2>Property Info</h2><table class="table" id="property-data-table-1">';
+						block1 = block1 + '<tbody><tr><th>Label</th><th>Value</th></tr>';
 						
-						if($.inArray(item.Name,parcel_desired) != -1){
-							var item_label = item.Label;
-							var item_value = "";
-							if(item.Value){
-								item_value = item.Value;
+						$.each(parcel_attributes, function (i, item) {
+							
+							if($.inArray(item.Name,parcel_desired) != -1){
+								var item_label = item.Label;
+								var item_value = "";
+								if(item.Value){
+									item_value = item.Value;
+								}
+								block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
 							}
-							block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
-						}
+							
+						});
 						
-					});
+						block1 = block1 + '</tbody></table></div>';
 					
-					block1 = block1 + '</tbody></table></div>';
-				
-				// block 2: property zoning and development information
-				var block2 = '<div class="column two"><h2>Zoning and Development Info</h2><table class="display" id="property-data-table-2">';
-					
-					$.each(zoning_attributes, function (i, item) {
+					// block 2: property zoning and development information
+					var block2 = '<div class="column two"><h2>Zoning and Development Info</h2><table class="display" id="property-data-table-2">';
 						
-						if($.inArray(item.Name,parcel_desired) != -1){
-							var item_label = item.Label;
-							var item_value = "";
-							if(item.Value){
-								item_value = item.Value;
+						$.each(zoning_attributes, function (i, item) {
+							
+							if($.inArray(item.Name,parcel_desired) != -1){
+								var item_label = item.Label;
+								var item_value = "";
+								if(item.Value){
+									item_value = item.Value;
+								}
+								block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
 							}
-							block1 = block1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
-						}
+							
+						});
 						
-					});
+						block2 = block2 = '</table></div>';
+						
+					$('#modal div.modal-header h3').html(data.locationReportResult.AddressQueryData.AddressLocation);
+					/*$('#results-map').html(
+						$.fn.createMaps(
+							true,
+							data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity,
+							data.locationReportResult.ParcelQueryData.SelectedParcelID
+						)
+					);*/
 					
-					block2 = block2 = '</table></div>';
-					
-				$('#modal div.modal-header h3').html(data.locationReportResult.AddressQueryData.AddressLocation);
-				/*$('#results-map').html(
-					$.fn.createMaps(
-						true,
-						data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity,
-						data.locationReportResult.ParcelQueryData.SelectedParcelID
-					)
-				);*/
-				
-				// add blocks to page	
-				$('#modal div.modal-body').html(title+block1+block2);
+					// add blocks to page	
+					$('#modal div.modal-body').html(block1+block2);
 				    
-			}else{
-				$('#modal div.modal-body').html('<h3>No records found.</h3>');
-			} 
-		});
+				}else{
+					$('#modal div.modal-body').html('<h3>No records found.</h3>');
+				}
+			});
 	};
 
 	// geoCodeLocator
@@ -260,7 +266,7 @@ $(function() {
 					
 		        	$(xml).find('AddressList').each(function(){
 		        		// get cagis x & y coordianants for propery query
-		        		coord_str = 'x=' + $(this).find('X_COORD').text() + '&y=' + $(this).find('Y_COORD').text();
+		        		coord_str = $(this).find('X_COORD').text() + ',' + $(this).find('Y_COORD').text();
 		        		popover_str = $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
 		        		
 		        		// build display block
