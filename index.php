@@ -22,31 +22,31 @@
 		<script type="text/javascript" src="js/app.js"></script>
 	</head>
 	<body>
-	    <div class="navbar">
+		<div class="navbar">
 		    <div class="navbar-inner">
 			    <div class="container">
 			     
-				    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-				    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				    <span class="icon-bar"></span>
-				    <span class="icon-bar"></span>
-				    <span class="icon-bar"></span>
-				    </a>
+				 <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+				 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+				 	<span class="icon-bar"></span>
+				 	<span class="icon-bar"></span>
+				 	<span class="icon-bar"></span>
+				 </a>
 				     
-				    <!-- Be sure to leave the brand out there if you want it shown -->
-				    <a class="brand" href="#">CAGIS</a>
-				    <!-- Everything you want hidden at 940px or less, place within here -->
-				    <div class="nav-collapse collapse">
-					    <form class="navbar-search pull-right">
-							<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
-							<button type="submit" class="btn">Search</button>
-							<img src="/img/loader.gif" class="loader"  style="display:none;"/ >
-						</form>
-				    </div>
+				<!-- Be sure to leave the brand out there if you want it shown -->
+				<a class="brand" href="#">CAGIS</a>
+				<!-- Everything you want hidden at 940px or less, place within here -->
+				<div class="nav-collapse collapse">
+					<form class="navbar-search pull-right">
+						<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
+						<button type="submit" class="btn">Search</button>
+						<img src="/img/loader.gif" class="loader"  style="display:none;"/ >
+					</form>
+				</div>
 			     
 			    </div>
 		    </div>
-	    </div>
+		</div>
 		<div class="row-fluid">
 			<div class="span12">
 						
