@@ -51,9 +51,14 @@ $(function() {
 		
 	// View Report Links
 	$("body").on("click", "a.report", function(){
-		$("#modal").modal("show");
+		var title = $(this).text();
 		var coord_str = $(this).attr("rel");
+		
+		$('#modal div.modal-header h3').text(title);
+		$("#modal").modal("show");
+		
 		$.fn.getPropertyReport(coord_str);
+		
 		return false;
 	});
 
@@ -210,10 +215,7 @@ $(function() {
 					
 					var tab3 = '<div class="tab-pane" id="tab3">GOOGLE MAPS GO HERE</div>';
 					
-					// Title
-					$('#modal div.modal-header h3').html(data.locationReportResult.AddressQueryData.AddressLocation);
-					
-					// add blocks to page	
+					// add tabs to modal body	
 					$('#modal div.modal-body').html(tabs+'<div class="tab-content">'+tab1+tab2+tab3+'</div>');
 					
 					$('#report-tabs a:first').tab('show');
