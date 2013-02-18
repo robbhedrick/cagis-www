@@ -1,6 +1,7 @@
 body{padding:2px;}
 div.box{background-color: #BBD8E9;border-radius: 3px 3px 3px 3px;padding:10px;margin-top:6px;}
 span.more-info-popover{float:right;}
+.navbar-search{margin-top: 2px;}
 #map_canvas{
 	width: 100%;
 	height: 100%;

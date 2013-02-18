@@ -37,7 +37,14 @@
 				<a class="brand" href="#">CAGIS</a>
 				<!-- Everything you want hidden at 940px or less, place within here -->
 				<div class="nav-collapse collapse">
-					<form class="navbar-search pull-right">
+					<ul class="nav">
+						<li class="active">
+							<a href="#">Home</a>
+						</li>
+						<li><a href="#">Link</a></li>
+						<li><a href="#">Link</a></li>
+					</ul>
+					<form class="navbar-search">
 						<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
 						<button type="submit" class="btn">Search</button>
 						<img src="/img/loader.gif" class="loader"  style="display:none;"/ >
