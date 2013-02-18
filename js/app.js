@@ -6,7 +6,7 @@
  */
  
 // GLOBAL VARS
-var server = 'cagis.pluto.dev';
+var server = 'robbhedrick.com/projects/web/cagis';
 var service = "http://" + server + "/jsonp.php?callback=?";
 var my_latitude = "";
 var my_longitude = "";
