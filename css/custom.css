@@ -1,6 +1,6 @@
 body{padding:2px;}
 div.box{background-color: #BBD8E9;border-radius: 3px 3px 3px 3px;padding:10px;margin-top:6px;}
-h3.loader{background: url('/img/loader.gif') no-repeat left;padding-left:34px;}
+h3.loader{background: url('/img/loading.gif') no-repeat left;padding-left:34px;}
 span.more-info-popover{float:right;}
 .navbar-search{margin-top: 2px;}
 #map_canvas{
@@ -10,4 +10,15 @@ span.more-info-popover{float:right;}
 	max-height: 375px;
 	min-width: 275px;
 	min-height: 275px;
+}
+.footer {
+    background-color: #F5F5F5;
+    border-top: 1px solid #E5E5E5;
+    margin-top: 70px;
+    padding: 30px 0;
+    text-align: center;
+}
+.footer p {
+    color: #777777;
+    margin-bottom: 0;
 }
