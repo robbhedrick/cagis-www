@@ -122,6 +122,28 @@ $(function() {
 			$(':button').show();	
 		}
 	};
+	
+	$.fn.googleImageMap = function(locaion, type) {
+		var map = '<img src="http://maps.googleapis.com/maps/api/';
+		
+			switch(type){
+				case 'satellite':
+					map = map + 'staticmap?center='+locaion;
+					map = map + '&markers=size:mid|color:red|'+locaion;
+					map = map + '&zoom=19&size=275x215&maptype=satellite&sensor=false">';
+					break;
+				case 'standard':
+					map = map + 'staticmap?center='+locaion;
+					map = map + '&markers=size:mid|color:red|'+locaion;
+					map = map + '&zoom=18&size=275x215&sensor=false">';
+					break;
+				case 'streetview':
+					map = map + 'streetview?size=275x215&location='+locaion+'&sensor=false">';
+					break;
+			}
+		
+		return map;
+	};
 					
 	// this function will do some basic things to set and get the stage for search result. 
 	$.fn.search = function() {
@@ -152,6 +174,8 @@ $(function() {
 
 			$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
 				if(data.locationReportResult.ParcelQueryData){
+					
+					var location = data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity;
 					
 					if(data.locationReportResult.ParcelQueryData.isCondoProperty){
 						parcel_attributes = data.locationReportResult.ParcelQueryData.CondoParcelData.ListCondoUnits.CGParcelAttributes[2];
@@ -222,9 +246,9 @@ $(function() {
 						tab3 = tab3 + '<li data-target="#myCarousel" data-slide-to="2"></li>';
 						tab3 = tab3 + '</ol>';
 						tab3 = tab3 + '<div class="carousel-inner">';
-						tab3 = tab3 + '<div class="active item">Satelite Image</div>';
-						tab3 = tab3 + '<div class="item">Streetview Image</div>';
-						tab3 = tab3 + '<div class="item">Basic Map Image</div>';
+						tab3 = tab3 + '<div class="active item">' + $.fn.googleImageMap(location, 'satellite') + '</div>';
+						tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'streetview') + '</div>';
+						tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'standard') + '</div>';
 						tab3 = tab3 + '</div>';
 						tab3 = tab3 + ' <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>';
 						tab3 = tab3 + '<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>';
