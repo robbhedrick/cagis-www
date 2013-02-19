@@ -13,17 +13,13 @@ var my_longitude = "";
 
 // GEO CALLBACK
 function success_callback(p){
-	//alert('lat='+p.coords.latitude.toFixed(2)+';lon='+p.coords.longitude.toFixed(2));
-	//$(':input[name=latitude]').val(p.coords.latitude.toFixed(3));
-	//$(':input[name=longitude]').val(p.coords.longitude.toFixed(3));
-	//geo_position_js.showMap(p.coords.latitude.toFixed(2),p.coords.longitude.toFixed(2));
 	my_latitude = p.coords.latitude.toFixed(3);
 	my_longitude = p.coords.longitude.toFixed(3);
 	$('#details').html("<h3>You're Current Location</h3>");
 	loadGooglMapScript();
 }
 
-// GOOGLE MAPS
+// GOOGLE MAPS API
 function initialize() {
   var mapOptions = {
     zoom: 18,
@@ -44,6 +40,21 @@ function loadGooglMapScript(coords) {
 // GEO CALLBACK ERROR
 function error_callback(p) {
 	alert('error='+p.code);
+}
+ 
+// Change meta viewport if IE moible 10 browser
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+	var msViewportStyle = document.createElement("style");
+	msViewportStyle.appendChild(
+		document.createTextNode("@-ms-viewport{width:auto!important}")
+	);
+	document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+}
+
+if(geo_position_js.init()) {
+	geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
+}else{
+	alert("Functionality not available");
 }
  
 // jQuery
@@ -110,7 +121,6 @@ $(function() {
 		});
 		return res;
 	};
-	
 	
 	// set loader icon
 	$.fn.loader = function(s) {
@@ -344,27 +354,11 @@ $(function() {
 			$.fn.scrollTo("h3");
 		});
 	};
-		
+	
 	// set all inputs.
 	$(':input').clear();
 		
 	// set all buttons.
 	$(".navbar-search").search();
-	
-	// ------------------------------------------------------------------------------------------------------------------------------------------------/
 });
 
-// Change meta viewport if IE moible 10 browser
-if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
-	var msViewportStyle = document.createElement("style");
-	msViewportStyle.appendChild(
-		document.createTextNode("@-ms-viewport{width:auto!important}")
-	);
-	document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
-}
-
-if(geo_position_js.init()) {
-	geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
-}else{
-	alert("Functionality not available");
-}
