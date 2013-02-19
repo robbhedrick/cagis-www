@@ -199,7 +199,7 @@ $(function() {
 						
 					// tab1: basic property information					
 					var tab1 = '<div class="tab-pane active" id="tab1">';
-						tab1 = tab1 + '<table>';
+						tab1 = tab1 + '<table class="table">';
 						tab1 = tab1 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
 						tab1 = tab1 + '<tbody>';
 						
@@ -220,7 +220,7 @@ $(function() {
 					
 					// tab2: basic property information					
 					var tab2 = '<div class="tab-pane" id="tab2">';
-						tab2 = tab2 + '<table>';
+						tab2 = tab2 + '<table class="table">';
 						tab2 = tab2 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
 						tab2 = tab2 + '<tbody>';
 						
