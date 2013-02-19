@@ -124,24 +124,26 @@ $(function() {
 	};
 	
 	$.fn.googleImageMap = function(locaion, type) {
-		var map = '<img src="http://maps.googleapis.com/maps/api/';
+		var src = 'http://maps.googleapis.com/maps/api/';
 		
-			switch(type){
-				case 'satellite':
-					map = map + 'staticmap?center='+locaion;
-					map = map + '&markers=size:mid|color:red|'+locaion;
-					map = map + '&zoom=19&size=275x215&maptype=satellite&sensor=false">';
-					break;
-				case 'standard':
-					map = map + 'staticmap?center='+locaion;
-					map = map + '&markers=size:mid|color:red|'+locaion;
-					map = map + '&zoom=18&size=275x215&sensor=false">';
-					break;
-				case 'streetview':
-					map = map + 'streetview?size=275x215&location='+locaion+'&sensor=false">';
-					break;
-			}
-		
+		switch(type){
+			case 'satellite':
+				src = src + 'staticmap?center='+locaion;
+				src = src + '&markers=size:mid|color:red|'+locaion;
+				src = src + '&zoom=19&size=640x640&maptype=satellite&sensor=false';
+				break;
+			case 'standard':
+				src = src + 'staticmap?center='+locaion;
+				src = src + '&markers=size:mid|color:red|'+locaion;
+				src = src + '&zoom=18&size=640x640&sensor=false';
+				break;
+			case 'streetview':
+				src = src + 'streetview?size=640x640&location='+locaion+'&sensor=false';
+				break;
+		}
+			
+		var map = '<a class="map" href="'+src+'"><img src="'+src+'" /></a>';
+
 		return map;
 	};
 					
@@ -239,26 +241,33 @@ $(function() {
 					
 					// tab3: google maps
 					var tab3 = '<div class="tab-pane" id="tab3">';
-						tab3 = tab3 + '<div id="myCarousel" class="carousel slide">';
+						tab3 = tab3 + '<div id="map_carousel" class="carousel slide">';
 						tab3 = tab3 + '<ol class="carousel-indicators">';
-						tab3 = tab3 + '<li data-target="#myCarousel" data-slide-to="0" class="active"></li>';
-						tab3 = tab3 + '<li data-target="#myCarousel" data-slide-to="1"></li>';
-						tab3 = tab3 + '<li data-target="#myCarousel" data-slide-to="2"></li>';
+						tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="0" class="active"></li>';
+						tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="1"></li>';
+						tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="2"></li>';
 						tab3 = tab3 + '</ol>';
 						tab3 = tab3 + '<div class="carousel-inner">';
 						tab3 = tab3 + '<div class="active item">' + $.fn.googleImageMap(location, 'satellite') + '</div>';
 						tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'streetview') + '</div>';
 						tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'standard') + '</div>';
 						tab3 = tab3 + '</div>';
-						tab3 = tab3 + ' <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>';
-						tab3 = tab3 + '<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>';
+						tab3 = tab3 + ' <a class="carousel-control left" href="#map_carousel" data-slide="prev">&lsaquo;</a>';
+						tab3 = tab3 + '<a class="carousel-control right" href="#map_carousel" data-slide="next">&rsaquo;</a>';
 						tab3 = tab3 + '</div>';
 						tab3 = tab3 + '</div><!-- /Close Tab3 -->';
-					
+						
+										
 					// add tabs to modal body	
 					$('#modal div.modal-body').html(tabs+'<div class="tab-content">'+tab1+tab2+tab3+'</div>');
 					
 					$('#report-tabs a:first').tab('show');
+					
+					// Update a.map element with proper background image. Total hack but works.
+					$("#map_carousel a.map").each(function(){
+						var src = $(this).attr("href");
+						$(this).attr("style", "background-image:url('"+src+"')");
+					});
 									    
 				}else{
 					$('#modal div.modal-body').html('<h3>No records found.</h3>');
