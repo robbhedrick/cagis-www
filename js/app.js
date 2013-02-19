@@ -244,8 +244,10 @@ $(function() {
 			
 			if(result_count >= 1){
 				if(result_count == 1){							
-					coord_str = 'x='+$(xml).find('X_COORD').text()+'&y='+$(xml).find('Y_COORD').text();
+					coord_str = $(xml).find('X_COORD').text()+','+$(xml).find('Y_COORD').text();
 					$.fn.getPropertyReport(coord_str);
+					$('#modal div.modal-header h3').text(location);
+					$("#modal").modal("show");
 				}else{
 					title = '<h3>'+result_count+' Records Found</h3>';
 					block = '<table class="table table-striped"><thead><tr>';
