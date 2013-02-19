@@ -213,7 +213,23 @@ $(function() {
 						
 						tab2 = tab2 + '</tbody></table></div>';
 					
-					var tab3 = '<div class="tab-pane" id="tab3">GOOGLE MAPS GO HERE</div>';
+					// tab3: google maps
+					var tab3 = '<div class="tab-pane" id="tab3">';
+						tab3 = tab3 + '<div id="myCarousel" class="carousel slide">';
+						tab3 = tab3 + '<ol class="carousel-indicators">';
+						tab3 = tab3 + '<li data-target="#myCarousel" data-slide-to="0" class="active"></li>';
+						tab3 = tab3 + '<li data-target="#myCarousel" data-slide-to="1"></li>';
+						tab3 = tab3 + '<li data-target="#myCarousel" data-slide-to="2"></li>';
+						tab3 = tab3 + '</ol>';
+						tab3 = tab3 + '<div class="carousel-inner">';
+						tab3 = tab3 + '<div class="active item">Satelite Image</div>';
+						tab3 = tab3 + '<div class="item">Streetview Image</div>';
+						tab3 = tab3 + '<div class="item">Basic Map Image</div>';
+						tab3 = tab3 + '</div>';
+						tab3 = tab3 + ' <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>';
+						tab3 = tab3 + '<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>';
+						tab3 = tab3 + '</div>';
+						tab3 = tab3 + '</div><!-- /Close Tab3 -->';
 					
 					// add tabs to modal body	
 					$('#modal div.modal-body').html(tabs+'<div class="tab-content">'+tab1+tab2+tab3+'</div>');
