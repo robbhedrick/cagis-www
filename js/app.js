@@ -257,7 +257,6 @@ $(function() {
 						tab3 = tab3 + '</div>';
 						tab3 = tab3 + '</div><!-- /Close Tab3 -->';
 						
-										
 					// add tabs to modal body	
 					$('#modal div.modal-body').html(tabs+'<div class="tab-content">'+tab1+tab2+tab3+'</div>');
 					
