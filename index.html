@@ -68,7 +68,16 @@
 							</div>
 							<div class="box span6 hidden-phone">
 								<div id="details"></div>
-								<div id="droppable"><p>Drop Here!</p></div>
+								<div id="droppable"><p class="placeholder">Drop Here!</p></div>
+								<div>
+								<strong>Mode of Travel: </strong>
+								<select id="mode" onchange="calcRoute();">
+								  <option value="DRIVING">Driving</option>
+								  <option value="WALKING">Walking</option>
+								  <option value="BICYCLING">Bicycling</option>
+								  <option value="TRANSIT">Transit</option>
+								</select>
+								</div>
 							 	<div id="map_canvas"></div>
 							</div>
 						</div>

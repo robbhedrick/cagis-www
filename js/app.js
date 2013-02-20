@@ -10,24 +10,66 @@ var server = 'robbhedrick.com/projects/web/cagis';
 var service = "http://" + server + "/jsonp.php?callback=?";
 var my_latitude = "";
 var my_longitude = "";
+var geocoder;
+var directionsService;
+var directionsDisplay;
+var map;
+var haight;
+var oceanBeach;
+
 
 // GEO CALLBACK
 function success_callback(p){
-	my_latitude = p.coords.latitude.toFixed(3);
-	my_longitude = p.coords.longitude.toFixed(3);
+	my_latitude = p.coords.latitude.toFixed(5);
+	my_longitude = p.coords.longitude.toFixed(5);
 	$('#details').html("<h3>You're Current Location</h3>");
 	loadGooglMapScript();
 }
 
 // GOOGLE MAPS API
 function initialize() {
+  geocoder = new google.maps.Geocoder();
+  directionsService = new google.maps.DirectionsService();
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  haight = new google.maps.LatLng(my_latitude, my_longitude);
+  oceanBeach = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
   var mapOptions = {
-    zoom: 18,
-    center: new google.maps.LatLng(my_latitude, my_longitude),
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    zoom: 14,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: haight
   }
-  var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+  directionsDisplay.setMap(map);
 }
+
+function calcRoute() {
+  var selectedMode = document.getElementById("mode").value;
+  var request = {
+      origin: haight,
+      destination: oceanBeach,
+      travelMode: google.maps.TravelMode[selectedMode]
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    }
+  });
+}
+
+function codeAddress(address) {
+	geocoder.geocode( { 'address': address}, function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			map.setCenter(results[0].geometry.location);
+			var marker = new google.maps.Marker({
+        		map: map,
+        		position: results[0].geometry.location
+        	});
+        } else {
+    		alert("Geocode was not successful for the following reason: " + status);
+    	}
+    });
+}
+
 
 function loadGooglMapScript(coords) {
   var script = document.createElement("script");
@@ -93,15 +135,14 @@ $(function() {
 		$(this).tab('show');
 	});
 	
-    $("#droppable").droppable({
-      drop: function( event, ui ) {
-        $(this)
-          .addClass( "ui-state-highlight" )
-          .find("p")
-            .html("Dropped!");
-      }
-    });
-		
+	$("#droppable").droppable({
+	  drop: function( event, ui ) {
+	  	  var address = ui.draggable.find("a").attr("alt");
+	      $(this).find(".placeholder").text(address);
+	        //calcRoute();
+	       codeAddress(address);
+	  }
+	});
 			
 	// Scrolls page back to search results header.
 	$.fn.scrollTo = function(ele) {
@@ -109,7 +150,7 @@ $(function() {
 			scrollTop: $(ele).offset().top
 		}, 200);
 	};
-	
+
 	// Custom function to clear and repopulate default value of input fields.
 	$.fn.clear = function() {
 		return this.focus(function(){
@@ -297,7 +338,7 @@ $(function() {
 	// geoCodeLocator
 	$.fn.geoCodeLocator = function(location) {
 		
-		var results, title, block, parcel_id, x_coords, y_coords, xml, coord_str, popover_str;
+		var results, title, block, parcel_id, x_coords, y_coords, xml, coord_str, popover_str, full_address_str;
 		
 		// call jsonp
 		$.getJSON(service,{action: 'geoCodeLocator', location: location}, function(data){
@@ -329,11 +370,12 @@ $(function() {
 		        		// get cagis x & y coordianants for propery query
 		        		coord_str = $(this).find('X_COORD').text() + ',' + $(this).find('Y_COORD').text();
 		        		popover_str = $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
+		        		full_address_str = $(this).find('ADDRESS').text() + " " + $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
 		        		
 		        		// build display block
 		        		block = block + '<tr>';
 		        		block = block + '<td class="data-address"><span class="address-data-link">';
-		        		block = block + '<a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a></span>';
+		        		block = block + '<a href="#" rel="' + coord_str + '" class="report" alt="' + full_address_str + '">' + $(this).find('ADDRESS').text() + '</a></span>';
 		        		block = block + '<span class="more-info-popover visible-phone hidden-desktop hidden-tablet">';
 		        		block = block + '<a class="btn btn-popover" href="#"\
 		        		data-title="' + $(this).find('ADDRESS').text() + '"\
@@ -352,7 +394,7 @@ $(function() {
 					
 					$('#results').html(results);
 					
-					$("span.address-data-link").draggable();
+					$("span.address-data-link").draggable({appendTo: "body",helper: "clone"});
 					
 				}
 			}else{
