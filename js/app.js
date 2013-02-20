@@ -393,8 +393,8 @@ $(function() {
 					
 					$('#results').html(results);
 					
+					$("#advanced-map-controls").show();
 					$("span.address-data-link").draggable({appendTo: "body",helper: "clone"});
-					
 				}
 			}else{
 				$('#results').html('<h3>No records found.</h3>');
