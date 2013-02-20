@@ -14,7 +14,7 @@ var geocoder;
 var directionsService;
 var directionsDisplay;
 var map;
-var haight;
+var current;
 var oceanBeach;
 
 
@@ -22,7 +22,6 @@ var oceanBeach;
 function success_callback(p){
 	my_latitude = p.coords.latitude.toFixed(5);
 	my_longitude = p.coords.longitude.toFixed(5);
-	$('#details').html("<h3>You're Current Location</h3>");
 	loadGooglMapScript();
 }
 
@@ -31,22 +30,21 @@ function initialize() {
   geocoder = new google.maps.Geocoder();
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer();
-  haight = new google.maps.LatLng(my_latitude, my_longitude);
-  oceanBeach = new google.maps.LatLng(37.7683909618184, -122.51089453697205);
+  current = new google.maps.LatLng(my_latitude, my_longitude);
   var mapOptions = {
     zoom: 14,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    center: haight
+    center: current
   }
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
   directionsDisplay.setMap(map);
 }
 
-function calcRoute() {
+function calcRoute(location) {
   var selectedMode = document.getElementById("mode").value;
   var request = {
-      origin: haight,
-      destination: oceanBeach,
+      origin: current,
+      destination: location,
       travelMode: google.maps.TravelMode[selectedMode]
   };
   directionsService.route(request, function(response, status) {
@@ -59,11 +57,12 @@ function calcRoute() {
 function codeAddress(address) {
 	geocoder.geocode( { 'address': address}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
-			map.setCenter(results[0].geometry.location);
+			//map.setCenter(results[0].geometry.location);
 			var marker = new google.maps.Marker({
         		map: map,
         		position: results[0].geometry.location
         	});
+        	calcRoute(results[0].geometry.location);
         } else {
     		alert("Geocode was not successful for the following reason: " + status);
     	}
@@ -135,11 +134,11 @@ $(function() {
 		$(this).tab('show');
 	});
 	
+	// droppable area for address
 	$("#droppable").droppable({
 	  drop: function( event, ui ) {
 	  	  var address = ui.draggable.find("a").attr("alt");
 	      $(this).find(".placeholder").text(address);
-	        //calcRoute();
 	       codeAddress(address);
 	  }
 	});
