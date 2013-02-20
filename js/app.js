@@ -92,7 +92,17 @@ $(function() {
 		e.preventDefault();
 		$(this).tab('show');
 	});
+	
+    $("#droppable").droppable({
+      drop: function( event, ui ) {
+        $(this)
+          .addClass( "ui-state-highlight" )
+          .find("p")
+            .html("Dropped!");
+      }
+    });
 		
+			
 	// Scrolls page back to search results header.
 	$.fn.scrollTo = function(ele) {
 		$('html, body').animate({
@@ -341,6 +351,8 @@ $(function() {
 		        	results = title + block;
 					
 					$('#results').html(results);
+					
+					$("span.address-data-link").draggable();
 					
 				}
 			}else{
