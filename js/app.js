@@ -137,7 +137,7 @@ $(function() {
 	// droppable area for address
 	$("#droppable").droppable({
 	  drop: function( event, ui ) {
-	  	  var address = ui.draggable.find("a").attr("alt");
+	  	  var address = ui.draggable.attr("alt");
 	      $(this).find(".placeholder").text(address);
 	       codeAddress(address);
 	  }
@@ -363,6 +363,7 @@ $(function() {
 					block = block + '<th class="hidden-phone">City</th>';
 					block = block + '<th class="hidden-phone">State</th>';
 					block = block + '<th class="hidden-phone">Zipcode</th>';
+					block = block + '<th class="hidden-phone">&nbsp;</th>';
 					block = block + '</tr></thead><tbody>';
 					
 		        	$(xml).find('AddressList').each(function(){
@@ -372,9 +373,8 @@ $(function() {
 		        		full_address_str = $(this).find('ADDRESS').text() + " " + $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
 		        		
 		        		// build display block
-		        		block = block + '<tr>';
-		        		block = block + '<td class="data-address"><span class="address-data-link">';
-		        		block = block + '<a href="#" rel="' + coord_str + '" class="report" alt="' + full_address_str + '">' + $(this).find('ADDRESS').text() + '</a></span>';
+		        		block = block + '<tr class="drag">';
+		        		block = block + '<td class="data-address"><a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a>';
 		        		block = block + '<span class="more-info-popover visible-phone hidden-desktop hidden-tablet">';
 		        		block = block + '<a class="btn btn-popover" href="#"\
 		        		data-title="' + $(this).find('ADDRESS').text() + '"\
@@ -384,6 +384,7 @@ $(function() {
 		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
 		        		block = block + '<td class="data-state hidden-phone">' + $(this).find('STATE').text() + '</td>';
 		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
+		        		block = block + '<td class="drag-drop hidden-phone"><i class="icon-move" alt="' + full_address_str + '"></i></td>';
 		        		block = block + '</tr>';
 		        	});
 		        	
@@ -394,7 +395,7 @@ $(function() {
 					$('#results').html(results);
 					
 					$("#advanced-map-controls").show();
-					$("span.address-data-link").draggable({appendTo: "body",helper: "clone"});
+					$("i.icon-move").draggable({appendTo: "body",helper: "clone"});
 				}
 			}else{
 				$('#results').html('<h3>No records found.</h3>');

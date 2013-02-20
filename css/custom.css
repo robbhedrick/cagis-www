@@ -6,7 +6,7 @@ html, body { height: 100%; /* The html and body elements cannot have any padding
 	min-height: 100%;
 	height: auto !important;
 	height: 100%; /* Negative indent footer by it's height */
-	margin: 0 auto -60px;
+	margin: 30px auto -60px;
 }
 
 /* Set the fixed height of the footer here */
@@ -38,6 +38,7 @@ html, body { height: 100%; /* The html and body elements cannot have any padding
 div.box{background-color: #BBD8E9;border-radius: 3px 3px 3px 3px;padding:10px;margin-top:6px;}
 h3.loader{background: url('/img/loading.gif') no-repeat left;padding-left:34px;}
 span.more-info-popover{float:right;}
+span.address-data-link l.icon-move{margin-right:3px;}
 #droppable{border:2px solid #000;padding:25px;background-color: #515151;border-radius: 6px 6px 6px 6px;padding:10px;margin-top:6px;margin:0 0 12px;text-align:center;color:#FFFFFF;}
 .ui-draggable{display:block;}
 /* Google Map Fixex */
