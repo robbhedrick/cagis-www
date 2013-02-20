@@ -56,37 +56,43 @@
 		</div><!-- navbar -->
 		
 		<div id="wrapper">		
-			<div class="container-fluid">
-				<div class="row-fluid">
+			<div class="container">
+				<div class="row">
+					<div class="span12">
+						<div class="row">
+						
+						<div class="span6">
+							<div class="box">
+								<div id="results">
+									<h3>Cincinnati Area <br />Geographic Information System (CAGIS)</h3>
+									<p> Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh. Sed tempus risus at magna rhoncus ultrices. Nullam rhoncus ipsum eu massa interdum porttitor. Ut bibendum gravida massa eu condimentum. Sed risus lorem, pulvinar a rhoncus sagittis, fermentum et sapien. Aliquam eget pulvinar turpis. Aliquam non arcu dui. Quisque at tellus odio, et tristique quam. Morbi consequat iaculis tortor, ac consequat mauris molestie at. Aliquam non mi eu elit pharetra vehicula. Nam gravida placerat semper. Donec vulputate iaculis enim. Nam blandit quam a magna ornare pellentesque. Nulla nec justo justo, ut laoreet justo. </p>
+								</div><!-- /results -->
+							</div>
+						</div><!-- /span6 -->				
+						
+						<div class="span6 hidden-phone">
+							<div class="box affix">
+								<div id="advanced-map-controls">
+									<div id="mode-of-trans">
+										<strong>Mode of Travel: </strong>
+										<select id="mode" onchange="calcRoute();">
+										<option value="DRIVING">Driving</option>
+										<option value="WALKING">Walking</option>
+										<option value="BICYCLING">Bicycling</option>
+										<option value="TRANSIT">Transit</option>
+										</select>
+									</div>
+									<div id="droppable"><p class="placeholder">Drop Here!</p></div>
+								</div><!-- /advanced-map-controls -->
+						 		<div id="map_canvas" style="width:100%; height:100%"></div>
+						 		<p>Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh.</p>
+						 	</div>
+						</div><!-- /span6 -->
 
-					<div class="span8">
-						<div class="box">
-							<div id="results">
-								<h3>Cincinnati Area <br />Geographic Information System (CAGIS)</h3>
-								<p> Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh. Sed tempus risus at magna rhoncus ultrices. Nullam rhoncus ipsum eu massa interdum porttitor. Ut bibendum gravida massa eu condimentum. Sed risus lorem, pulvinar a rhoncus sagittis, fermentum et sapien. Aliquam eget pulvinar turpis. Aliquam non arcu dui. Quisque at tellus odio, et tristique quam. Morbi consequat iaculis tortor, ac consequat mauris molestie at. Aliquam non mi eu elit pharetra vehicula. Nam gravida placerat semper. Donec vulputate iaculis enim. Nam blandit quam a magna ornare pellentesque. Nulla nec justo justo, ut laoreet justo. </p>
-							</div>
-						</div>
-					</div><!-- /result box -->
-					
-					<div class="span4 hidden-phone">
-						<div class="box affix">
-							<div id="advanced-map-controls">
-								<div id="mode-of-trans">
-									<strong>Mode of Travel: </strong>
-									<select id="mode" onchange="calcRoute();">
-									<option value="DRIVING">Driving</option>
-									<option value="WALKING">Walking</option>
-									<option value="BICYCLING">Bicycling</option>
-									<option value="TRANSIT">Transit</option>
-									</select>
-								</div>
-								<div id="droppable"><p class="placeholder">Drop Here!</p></div>
-							</div>
-					 		<div id="map_canvas" style="width:100%; height:100%"></div>
-					 	</div>
-					</div>
-					
-				</div><!-- /row -->
+				  	</div><!-- /span12 -->
+				  </div><!-- /row -->
+				  
+				  
 			    <div id="modal" class="modal hide fade">
 				    <div class="modal-header">
 				    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>

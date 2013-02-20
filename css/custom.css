@@ -6,7 +6,7 @@ html, body { height: 100%; /* The html and body elements cannot have any padding
 	min-height: 100%;
 	height: auto !important;
 	height: 100%; /* Negative indent footer by it's height */
-	margin: 60px auto -60px;
+	margin: 0 auto -60px;
 }
 
 /* Set the fixed height of the footer here */
@@ -35,7 +35,7 @@ html, body { height: 100%; /* The html and body elements cannot have any padding
 /* Custom page CSS
 -------------------------------------------------- */
 #wrapper > .container { padding-top: 60px; }
-div.box{background-color: #BBD8E9;border-radius: 3px 3px 3px 3px;padding:10px;margin-top:6px;}
+div.box{background-color: #BBD8E9;border-radius: 3px 3px 3px 3px;padding:10px;margin-bottom:6px;}
 h3.loader{background: url('/img/loading.gif') no-repeat left;padding-left:34px;}
 span.more-info-popover{float:right;}
 span.address-data-link l.icon-move{margin-right:3px;}

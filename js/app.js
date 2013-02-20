@@ -361,7 +361,7 @@ $(function() {
 					block = '<table class="table table-striped"><thead><tr>';
 					block = block + '<th>Address</th>';
 					block = block + '<th class="hidden-phone">City</th>';
-					block = block + '<th class="hidden-phone">State</th>';
+					block = block + '<th class="hidden-phone hidden-tablet">State</th>';
 					block = block + '<th class="hidden-phone">Zipcode</th>';
 					block = block + '<th class="hidden-phone">&nbsp;</th>';
 					block = block + '</tr></thead><tbody>';
@@ -382,7 +382,7 @@ $(function() {
 		        		data-placement="left">';
 		        		block = block + '<i class="icon-info-sign"></i></a></span></td>';
 		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
-		        		block = block + '<td class="data-state hidden-phone">' + $(this).find('STATE').text() + '</td>';
+		        		block = block + '<td class="data-state hidden-phone hidden-tablet">' + $(this).find('STATE').text() + '</td>';
 		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
 		        		block = block + '<td class="drag-drop hidden-phone"><a class="btn btn-move" href="#" alt="' + full_address_str + '" ><i class="icon-move"></i></a></td>';
 		        		block = block + '</tr>';
