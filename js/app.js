@@ -384,7 +384,7 @@ $(function() {
 		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
 		        		block = block + '<td class="data-state hidden-phone">' + $(this).find('STATE').text() + '</td>';
 		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
-		        		block = block + '<td class="drag-drop hidden-phone"><i class="icon-move" alt="' + full_address_str + '"></i></td>';
+		        		block = block + '<td class="drag-drop hidden-phone"><a class="btn btn-move" href="#" alt="' + full_address_str + '" ><i class="icon-move"></i></a></td>';
 		        		block = block + '</tr>';
 		        	});
 		        	
@@ -395,7 +395,7 @@ $(function() {
 					$('#results').html(results);
 					
 					$("#advanced-map-controls").show();
-					$("i.icon-move").draggable({appendTo: "body",helper: "clone"});
+					$("a.btn-move").draggable({appendTo: "body",helper: "clone"});
 				}
 			}else{
 				$('#results').html('<h3>No records found.</h3>');
