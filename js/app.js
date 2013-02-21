@@ -359,11 +359,11 @@ $(function() {
 				}else{
 					title = '<h3>'+result_count+' Records Found</h3>';
 					block = '<table class="table table-striped"><thead><tr>';
+					block = block + '<th class="hidden-phone">&nbsp;</th>';
 					block = block + '<th>Address</th>';
 					block = block + '<th class="hidden-phone">City</th>';
 					block = block + '<th class="hidden-phone hidden-tablet">State</th>';
 					block = block + '<th class="hidden-phone">Zipcode</th>';
-					block = block + '<th class="hidden-phone">&nbsp;</th>';
 					block = block + '</tr></thead><tbody>';
 					
 		        	$(xml).find('AddressList').each(function(){
@@ -373,7 +373,8 @@ $(function() {
 		        		full_address_str = $(this).find('ADDRESS').text() + " " + $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
 		        		
 		        		// build display block
-		        		block = block + '<tr class="drag">';
+		        		block = block + '<tr>';
+		        		block = block + '<td class="drag-drop hidden-phone"><a class="btn btn-move" href="#" alt="' + full_address_str + '" ><i class="icon-move"></i></a></td>';
 		        		block = block + '<td class="data-address"><a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a>';
 		        		block = block + '<span class="more-info-popover visible-phone hidden-desktop hidden-tablet">';
 		        		block = block + '<a class="btn btn-popover" href="#"\
@@ -384,7 +385,6 @@ $(function() {
 		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
 		        		block = block + '<td class="data-state hidden-phone hidden-tablet">' + $(this).find('STATE').text() + '</td>';
 		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
-		        		block = block + '<td class="drag-drop hidden-phone"><a class="btn btn-move" href="#" alt="' + full_address_str + '" ><i class="icon-move"></i></a></td>';
 		        		block = block + '</tr>';
 		        	});
 		        	
@@ -413,6 +413,6 @@ $(function() {
 	$(':input').clear();
 		
 	// set all buttons.
-	$(".navbar-search").search();
+	$("form.search").search();
 });
 
