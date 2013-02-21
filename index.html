@@ -11,86 +11,79 @@
 		
 		<!-- CSS Custom: -->
 		<link href="css/custom.css" rel="stylesheet">
-		
-		<!-- JS Libraries: -->
-		<script type="text/javascript" src="js/lib/jquery.js"></script>
-		<script type="text/javascript" src="js/lib/jqueryui.js"></script>
-		<script type="text/javascript" src="js/lib/bootstrap.js"></script>
-		<script type="text/javascript" src="js/lib/touchpunch.js"></script>
-		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
-
-
-		<!-- JS Custom: -->		
-		<script type="text/javascript" src="js/app.js"></script>
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top">
-		    <div class="navbar-inner">
-			    <div class="container">
-			     
-				 <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-				 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				 	<span class="icon-bar"></span>
-				 	<span class="icon-bar"></span>
-				 	<span class="icon-bar"></span>
-				 </a>
+		<div id="wrapper">	
+			<div class="navbar navbar-inverse navbar-fixed-top">
+			    <div class="navbar-inner">
+				    <div class="container">
 				     
-				<!-- Be sure to leave the brand out there if you want it shown -->
-				<a class="brand" href="#">CAGIS</a>
-				<!-- Everything you want hidden at 940px or less, place within here -->
-				<div class="nav-collapse collapse">
-					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#">Permits</a></li>
-						<li><a href="#">Resources</a></li>
-					</ul>
-					<form class="navbar-search">
-						<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
-						<button type="submit" class="btn">Search</button>
-						<img src="/img/searching.gif" class="loader"  style="display:none;"/ >
-					</form>
-				</div>
-			     
+					 <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+					 <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+					 	<span class="icon-bar"></span>
+					 	<span class="icon-bar"></span>
+					 	<span class="icon-bar"></span>
+					 </a>
+					     
+					<!-- Be sure to leave the brand out there if you want it shown -->
+					<a class="brand" href="#">CAGIS</a>
+					<!-- Everything you want hidden at 940px or less, place within here -->
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="active"><a href="#">Home</a></li>
+							<li><a href="#">Permits</a></li>
+							<li><a href="#">Resources</a></li>
+						</ul>
+						<form class="navbar-search">
+							<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
+							<button type="submit" class="btn">Search</button>
+							<img src="/img/searching.gif" class="loader"  style="display:none;"/ >
+						</form>
+					</div>
+				     
+				    </div>
 			    </div>
-		    </div>
-		</div><!-- navbar -->
-		
-		<div id="wrapper">		
+			</div><!-- navbar -->
+	
 			<div class="container">
 				<div class="row">
 					<div class="span12">
 						<div class="row">
+												
+							<div class="span6">
+								<div class="box">
+									<div id="results">
+										<h3>Cincinnati Area <br />Geographic Information System (CAGIS)</h3>
+										<p> Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh. Sed tempus risus at magna rhoncus ultrices. Nullam rhoncus ipsum eu massa interdum porttitor. Ut bibendum gravida massa eu condimentum. Sed risus lorem, pulvinar a rhoncus sagittis, fermentum et sapien. Aliquam eget pulvinar turpis. Aliquam non arcu dui. Quisque at tellus odio, et tristique quam. Morbi consequat iaculis tortor, ac consequat mauris molestie at. Aliquam non mi eu elit pharetra vehicula. Nam gravida placerat semper. Donec vulputate iaculis enim. Nam blandit quam a magna ornare pellentesque. Nulla nec justo justo, ut laoreet justo. </p>
+									</div><!-- /results -->
+								</div>
+							</div><!-- /span6 -->
+	
+							<div class="span3 hidden-phone">
+								<div class="box affix">
+									<div id="advanced-map-controls">
+										<div id="mode-of-trans">
+											<strong>Mode of Travel: </strong>
+											<select id="mode" onchange="calcRoute();">
+											<option value="DRIVING">Driving</option>
+											<option value="WALKING">Walking</option>
+											<option value="BICYCLING">Bicycling</option>
+											<option value="TRANSIT">Transit</option>
+											</select>
+										</div>
+										<div id="droppable"><p class="placeholder">Drop Here!</p></div>
+									</div><!-- /advanced-map-controls -->
+							 		<div id="map_canvas"></div>
+							 		<p>Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh.</p>
+							 	</div>
+							</div><!-- /span6 -->
 						
-						<div class="span6">
-							<div class="box">
-								<div id="results">
-									<h3>Cincinnati Area <br />Geographic Information System (CAGIS)</h3>
-									<p> Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh. Sed tempus risus at magna rhoncus ultrices. Nullam rhoncus ipsum eu massa interdum porttitor. Ut bibendum gravida massa eu condimentum. Sed risus lorem, pulvinar a rhoncus sagittis, fermentum et sapien. Aliquam eget pulvinar turpis. Aliquam non arcu dui. Quisque at tellus odio, et tristique quam. Morbi consequat iaculis tortor, ac consequat mauris molestie at. Aliquam non mi eu elit pharetra vehicula. Nam gravida placerat semper. Donec vulputate iaculis enim. Nam blandit quam a magna ornare pellentesque. Nulla nec justo justo, ut laoreet justo. </p>
-								</div><!-- /results -->
-							</div>
-						</div><!-- /span6 -->				
-						
-						<div class="span6 hidden-phone">
-							<div class="box affix">
-								<div id="advanced-map-controls">
-									<div id="mode-of-trans">
-										<strong>Mode of Travel: </strong>
-										<select id="mode" onchange="calcRoute();">
-										<option value="DRIVING">Driving</option>
-										<option value="WALKING">Walking</option>
-										<option value="BICYCLING">Bicycling</option>
-										<option value="TRANSIT">Transit</option>
-										</select>
-									</div>
-									<div id="droppable"><p class="placeholder">Drop Here!</p></div>
-								</div><!-- /advanced-map-controls -->
-						 		<div id="map_canvas" style="width:100%; height:100%"></div>
-						 		<p>Cras fermentum, diam a lacinia lacinia, lacus massa gravida libero, sed suscipit nisl massa quis nibh.</p>
-						 	</div>
-						</div><!-- /span6 -->
-
+						</div><!-- /row -->
 				  	</div><!-- /span12 -->
 				  </div><!-- /row -->
+				  
+				  
+				  
 				  
 				  
 			    <div id="modal" class="modal hide fade">
@@ -106,10 +99,9 @@
 				    	<a href="#" class="btn btn-primary" data-dismiss="modal">Save</a>
 				    </div>
 			    </div><!-- /modal -->
-			    
+			    <div id="push"></div>
 			</div><!--- /container -->
 			
-			<div id="push"></div>
 		</div><!-- /wrapper -->
 		
 		<footer id="footer">
@@ -124,5 +116,15 @@
 				</ul>
 			</div>
 		</footer>
+		<!-- JS Libraries: -->
+		<script type="text/javascript" src="js/lib/jquery.js"></script>
+		<script type="text/javascript" src="js/lib/jqueryui.js"></script>
+		<script type="text/javascript" src="js/lib/bootstrap.js"></script>
+		<script type="text/javascript" src="js/lib/touchpunch.js"></script>
+		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
+
+
+		<!-- JS Custom: -->		
+		<script type="text/javascript" src="js/app.js"></script>
 	</body>
 </html>
