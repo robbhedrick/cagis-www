@@ -22,6 +22,8 @@ div.box{background-color: #BBD8E9;border-radius: 3px 3px 3px 3px;padding:10px;ma
 h1{font-size:1.5em;line-height:1.2em;}
 h3.loader{background: url('/img/loading.gif') no-repeat left;padding-left:34px;}
 span.more-info-popover{float:right;}
+div.form{float:left;margin-right:6px;}
+div.advanced-map-controls{float:left;}
 span.address-data-link l.icon-move{margin-right:3px;}
 #droppable{border:2px solid #000;padding:25px;background-color: #515151;border-radius: 6px 6px 6px 6px;padding:10px;margin-top:6px;margin:0 0 12px;text-align:center;color:#FFFFFF;}
 .ui-draggable{display:block;}
