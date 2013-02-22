@@ -1,42 +1,78 @@
-/*
- * File:        app.js
- * Version:     1.0
- * Author:      Robb HedricK 
- *
- */
+/**
+  * File:		app.js
+  * Desc:		 
+  * Version:	1.0
+  * Author:		Robb HedricK 
+  *
+*/
  
-// GLOBAL VARS
+// GLOBAL VARS & FUNCTIONS
 var server = 'robbhedrick.com/projects/web/cagis';
 var service = "http://" + server + "/jsonp.php?callback=?";
 var latitude, longitude, latLng;
 var directionsSservice, directionsDisplay, geocoder, infowindow, map;
 
 
-// GEO CALLBACK
-function success_callback(p){
-	latitude = p.coords.latitude.toFixed(5);
-	longitude = p.coords.longitude.toFixed(5);
-	loadGooglMapScript();
+/**
+  * Desc: Success call back function for geo positioning.
+  * Para: [p] - Current position object.
+*/
+function geoSuccessCallback(p){
+	latitude = p.coords.latitude.toFixed(6);
+	longitude = p.coords.longitude.toFixed(6);
+	gMapLoadScript(); // Call function to load Google Maps APIs.
 }
 
-// GOOGLE MAPS API
-function initialize() {
+/**
+  * Desc: Error call back function for geo positioning.
+  * Para: [p] - Current position object.
+*/
+function geoErrorCallback(p) {
+	alert('error='+p.code);
+}
+
+/**
+  * Desc: Create new script element for Google Maps APIs.
+  * Note: Callback [gMapInitialize]
+*/
+function gMapLoadScript() {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2qJnw4jka8jrjXLWpRqd2qz5fHgxFo&sensor=false&callback=gMapInitialize";
+  document.body.appendChild(script);
+}
+
+/**
+  * Desc: Create new Google Map objects and service intances.
+*/
+function gMapInitialize() {
+  
+  // New instance of GM LatLng object.
+  latLng = new google.maps.LatLng(latitude, longitude);
+  
+  // Set GM options
+  var options = { zoom: 8, mapTypeId: google.maps.MapTypeId.ROADMAP, center: latLng};
+  
+  // New instance of og Googe Maps.
+  map = new google.maps.Map(document.getElementById("map_canvas"), options);
+  
+  // Create new instances of GM InfoWindow and Geocoder 
   infowindow = new google.maps.InfoWindow();
   geocoder = new google.maps.Geocoder();
+  
+  // Create new instances of GM direction services and set current map.
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer();
-  latLng = new google.maps.LatLng(latitude, longitude);
-  var mapOptions = {
-    zoom: 10,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-    center: latLng
-  }
-  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
   directionsDisplay.setMap(map);
-  codeLatLng(latLng);
+  
+  // Reverse geo code function
+  gMapCodeLatLng(latLng);
 }
 
-function calcRoute(location) {
+/**
+  * Desc: 
+*/
+function gMapCalcRoute(location) {
   var selectedMode = document.getElementById("mode").value;
   var request = {
       origin: latLng,
@@ -50,8 +86,10 @@ function calcRoute(location) {
   });
 }
 
-
-function codeLatLng(latlng) {
+/**
+  * Desc: GM geo code by latitude and longitude
+*/
+function gMapCodeLatLng(latlng) {
 	geocoder.geocode({'latLng': latlng}, function(results, status) {
 	  if (status == google.maps.GeocoderStatus.OK) {
 	    if (results[1]) {
@@ -69,7 +107,10 @@ function codeLatLng(latlng) {
 	});
 }
 
-function codeAddress(address) {
+/**
+  * Desc: GM geo code by address.
+*/
+function gMapCodeAddress(address) {
 	geocoder.geocode( { 'address': address}, function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
 			/*map.setCenter(results[0].geometry.location);
@@ -77,7 +118,7 @@ function codeAddress(address) {
         		map: map,
         		position: results[0].geometry.location
         	});*/
-        	calcRoute(results[0].geometry.location);
+        	gMapCalcRoute(results[0].geometry.location);
         } else {
     		alert("Geocode was not successful for the following reason: " + status);
     	}
@@ -85,21 +126,10 @@ function codeAddress(address) {
 }
 
 
-function loadGooglMapScript(coords) {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2qJnw4jka8jrjXLWpRqd2qz5fHgxFo&sensor=true&callback=initialize";
-  document.body.appendChild(script);
-}
-
-
-// GEO CALLBACK ERROR
-function error_callback(p) {
-	alert('error='+p.code);
-}
- 
-// Change meta viewport if IE moible 10 browser
-if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+/** Runtime ------------------------------------------------------------------------------------------
+  *
+*/
+if (navigator.userAgent.match(/IEMobile\/10\.0/)) { // Meta viewport if IE moible 10 browser
 	var msViewportStyle = document.createElement("style");
 	msViewportStyle.appendChild(
 		document.createTextNode("@-ms-viewport{width:auto!important}")
@@ -107,17 +137,18 @@ if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
 	document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
 }
 
-if(geo_position_js.init()) {
-	geo_position_js.getCurrentPosition(success_callback,error_callback,{enableHighAccuracy:true});
+if(geo_position_js.init()) { // Initiate geo positioning services.
+	geo_position_js.getCurrentPosition(geoSuccessCallback,geoErrorCallback,{enableHighAccuracy:true});
 }else{
 	alert("Functionality not available");
 }
  
-// jQuery
+/** jQuery --------------------------------------------------------------------------------------------
+  *
+*/
 $(function() {
 		
-	// View Report Links
-	$("body").on("click", "a.report", function(){
+	$("body").on("click", "a.report", function() {  // Event: Propery Report Dialog Window
 		var title = $(this).text();
 		var coord_str = $(this).attr("rel");
 		
@@ -129,8 +160,7 @@ $(function() {
 		return false;
 	});
 
-	// popover details
-	$("body").on("click", "a.btn-popover", function(){
+	$("body").on("click", "a.btn-popover", function() { // Event: Phone View Popovers
 		var ele = $(this);
 		var elems = $("a.btn-popover"), count = elems.length;
 		if(count >= 1) {
@@ -144,22 +174,23 @@ $(function() {
 		return false;
 	});
 	
-	$('body').on("click", "#report-tabs a", function (e) {
+	$('body').on("click", "#report-tabs a", function (e) { // Event: Tabs Toggle on Property Report Modal Window
 		e.preventDefault();
 		$(this).tab('show');
 	});
 	
-	// droppable area for address
-	$("#droppable").droppable({
+	$("#droppable").droppable( { // Event: jQuery UI Droppable Area For GM Directions.
 	  drop: function( event, ui ) {
 	  	  var address = ui.draggable.attr("alt");
 	      $(this).find(".placeholder").text(address);
-	       codeAddress(address);
+	       gMapCodeAddress(address);
 	  }
 	});
-			
-	// Scrolls page back to search results header.
-	$.fn.scrollTo = function(ele) {
+	
+	/**
+	  * Desc: CjQ Func:
+	*/		
+	$.fn.scrollTo = function(ele) { // Scrolls page back to search results header.
 		$('html, body').animate({
 			scrollTop: $(ele).offset().top
 		}, 200);
