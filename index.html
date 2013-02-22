@@ -46,11 +46,11 @@
 						<div class="row">
 
 
-
 							<div class="span6 hidden-tablet hidden-desktop">
 								<div class="box">
 									<h1>Cincinnati Area Geographic Information System (CAGIS)</h1>
 									<form class="search">
+										<input type="hidden" name="phone" value="true">
 										<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
 										<button type="submit" class="btn">Search</button>
 										<img src="/img/searching.gif" class="loader"  style="display:none;"/ >
@@ -63,6 +63,7 @@
 									<h1>Cincinnati Area Geographic Information System (CAGIS)</h1>
 									<div class="form">
 									<form class="search">
+										<input type="hidden" name="phone" value="false">
 										<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
 										<button type="submit" class="btn">Search</button>
 										<img src="/img/searching.gif" class="loader"  style="display:none;"/ >
@@ -102,10 +103,7 @@
 				  	</div><!-- /span12 -->
 				  </div><!-- /row -->
 				  
-				  
-				  
-				  
-				  
+				  			  
 			    <div id="modal" class="modal hide fade">
 				    <div class="modal-header">
 				    	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -137,13 +135,16 @@
 			</div>
 		</footer>
 		<!-- JS Libraries: -->
+		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
 		<script type="text/javascript" src="js/lib/jquery.js"></script>
 		<script type="text/javascript" src="js/lib/jqueryui.js"></script>
 		<script type="text/javascript" src="js/lib/bootstrap.js"></script>
-		<script type="text/javascript" src="js/lib/touchpunch.js"></script>
-		<script type="text/javascript" src="js/lib/geo.js"  charset="utf-8"></script>
-
-
+		
+		<!-- jQuery Plugins: -->
+		<script type="text/javascript" src="js/plugins/jquery.xml2json.js"></script>
+		<script type="text/javascript" src="js/plugins/jquery-ui.touchpunch.js"></script>
+		<script type="text/javascript" src="js/plugins/jquery.myhelper.js"></script>
+		
 		<!-- JS Custom: -->		
 		<script type="text/javascript" src="js/app.js"></script>
 	</body>

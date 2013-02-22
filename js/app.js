@@ -11,6 +11,7 @@ var server = 'robbhedrick.com/projects/web/cagis';
 var service = "http://" + server + "/jsonp.php?callback=?";
 var latitude, longitude, latLng;
 var directionsSservice, directionsDisplay, geocoder, infowindow, map;
+var properties, property;
 
 
 /**
@@ -187,48 +188,6 @@ $(function() {
 	  }
 	});
 	
-	/**
-	  * Desc: CjQ Func:
-	*/		
-	$.fn.scrollTo = function(ele) { // Scrolls page back to search results header.
-		$('html, body').animate({
-			scrollTop: $(ele).offset().top
-		}, 200);
-	};
-
-	// Custom function to clear and repopulate default value of input fields.
-	$.fn.clear = function() {
-		return this.focus(function(){
-			var v = $(this).val();
-			$(this).val( v === this.defaultValue ? '' : v );
-		}).blur(function(){
-			var v = $(this).val();
-			$(this).val( v.match(/^\s+$|^$/) ? this.defaultValue : v );
-		});	
-	};
-	
-	// return value of an objects key name
-	$.fn.getValueByKey = function(obj, key) {
-		var res = false;
-		$.each(obj, function (i, item) {
-			if(item.Name == key){
-				res = item.Value;
-			}
-		});
-		return res;
-	};
-	
-	// set loader icon
-	$.fn.loader = function(s) {
-		if(s){
-			$(':button').hide();	
-			$('img.loader').show();
-		}else{
-			$('img.loader').hide();
-			$(':button').show();	
-		}
-	};
-	
 	$.fn.googleImageMap = function(locaion, type) {
 		var src = 'http://maps.googleapis.com/maps/api/';
 		
@@ -258,6 +217,9 @@ $(function() {
 		return this.submit(function(event){
 			event.preventDefault();
 			
+			// get value of hidden field in  form.
+			var phone = $(this).find(':hidden[name=phone]').val();
+			
 			// get value of field in search form.
 			var location = $(this).find(':input[name=location]').val();
 			
@@ -265,7 +227,7 @@ $(function() {
 			$.fn.loader(true);
 			
 			// calling this function will determine one or many results.
-			$.fn.geoCodeLocator(location);	
+			$.fn.geoCodeLocator(phone, location);	
 			
 			return false;
 		});
@@ -277,121 +239,125 @@ $(function() {
 		var results = {"parcel":[],"zoning":[],};
 		var coords = strCoords.split(",");
 		var parcel_attributes, parcel_desired;
-				
-		$('#modal div.modal-body').html('<h3 class="loader">Loading...<h3/>');
+		
+		var ele = $('#modal div.modal-body');
+		 	ele.html('<h3 class="loader">Loading...<h3/>');
 
-			$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
-				if(data.locationReportResult.ParcelQueryData){
-					
-					var location = data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity;
-					
-					if(data.locationReportResult.ParcelQueryData.isCondoProperty){
-						parcel_attributes = data.locationReportResult.ParcelQueryData.CondoParcelData.ListCondoUnits.CGParcelAttributes[2];
-						parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
-					}else{
-						parcel_attributes = data.locationReportResult.ParcelQueryData.AudParcelAttributes.ParcelAttributes.ParcelAttribute;
-						parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
-					}
-					
-					var zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
-					var zoning_desired = ["PHONE","BND_NAME","ADDRESS","ZONING","zoning_codedescription"];
-					
-					// add tabs:
-					var tabs = '<ul id="report-tabs" class="nav nav-tabs">';
-						tabs = tabs + '<li><a href="#tab1" data-toggle="tab">Parcel Info</a></li>';
-						tabs = tabs + '<li><a href="#tab2" data-toggle="tab">Zoning Info</a></li>';
-						tabs = tabs + '<li><a href="#tab3" data-toggle="tab">Maps</a></li>';
-						tabs = tabs + "</ul>";
-						
-					// tab1: basic property information					
-					var tab1 = '<div class="tab-pane active" id="tab1">';
-						tab1 = tab1 + '<table class="table">';
-						tab1 = tab1 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
-						tab1 = tab1 + '<tbody>';
-						
-						$.each(parcel_attributes, function (i, item) {
-							
-							if($.inArray(item.Name,parcel_desired) != -1){
-								var item_label = item.Label;
-								var item_value = "";
-								if(item.Value){
-									item_value = item.Value;
-								}
-								tab1 = tab1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
-							}
-							
-						});
-						
-						tab1 = tab1 + '</tbody></table></div>';
-					
-					// tab2: basic property information					
-					var tab2 = '<div class="tab-pane" id="tab2">';
-						tab2 = tab2 + '<table class="table">';
-						tab2 = tab2 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
-						tab2 = tab2 + '<tbody>';
-						
-						$.each(zoning_attributes, function (i, item) {
-							
-							if($.inArray(item.Name,zoning_desired) != -1){
-								var item_label = item.Label;
-								var item_value = "";
-								if(item.Value){
-									item_value = item.Value;
-								}
-								tab2 = tab2 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
-							}
-							
-						});
-						
-						tab2 = tab2 + '</tbody></table></div>';
-					
-					// tab3: google maps
-					var tab3 = '<div class="tab-pane" id="tab3">';
-						tab3 = tab3 + '<div id="map_carousel" class="carousel slide">';
-						tab3 = tab3 + '<ol class="carousel-indicators">';
-						tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="0" class="active"></li>';
-						tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="1"></li>';
-						tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="2"></li>';
-						tab3 = tab3 + '</ol>';
-						tab3 = tab3 + '<div class="carousel-inner">';
-						tab3 = tab3 + '<div class="active item">' + $.fn.googleImageMap(location, 'satellite') + '</div>';
-						tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'streetview') + '</div>';
-						tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'standard') + '</div>';
-						tab3 = tab3 + '</div>';
-						tab3 = tab3 + ' <a class="carousel-control left" href="#map_carousel" data-slide="prev">&lsaquo;</a>';
-						tab3 = tab3 + '<a class="carousel-control right" href="#map_carousel" data-slide="next">&rsaquo;</a>';
-						tab3 = tab3 + '</div>';
-						tab3 = tab3 + '</div><!-- /Close Tab3 -->';
-						
-					// add tabs to modal body	
-					$('#modal div.modal-body').html(tabs+'<div class="tab-content">'+tab1+tab2+tab3+'</div>');
-					
-					$('#report-tabs a:first').tab('show');
-					
-					// Update a.map element with proper background image. Total hack but works.
-					$("#map_carousel a.map").each(function(){
-						var src = $(this).attr("href");
-						$(this).attr("style", "background-image:url('"+src+"')");
-					});
-									    
+		$.getJSON(service,{action: 'getPropertyReport', x: coords[0], y: coords[1]}, function(data){
+			if(data.locationReportResult.ParcelQueryData){
+				
+				var location = data.locationReportResult.AddressQueryData.AddressAttributes.addressWCity;
+				
+				if(data.locationReportResult.ParcelQueryData.isCondoProperty){
+					parcel_attributes = data.locationReportResult.ParcelQueryData.CondoParcelData.ListCondoUnits.CGParcelAttributes[2];
+					parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
 				}else{
-					$('#modal div.modal-body').html('<h3>No records found.</h3>');
+					parcel_attributes = data.locationReportResult.ParcelQueryData.AudParcelAttributes.ParcelAttributes.ParcelAttribute;
+					parcel_desired = ["OWNNM1","OWNNM2","OWNAD1","OWNAD2","MKTLND","MKTIMP","MKT_TOTAL_VAL","ANNUAL_TAXES"];
 				}
-			});
+				
+				var zoning_attributes = data.locationReportResult.ZoningQueryData.ZoningAttributes.ZoningAttribute;
+				var zoning_desired = ["PHONE","BND_NAME","ADDRESS","ZONING","zoning_codedescription"];
+				
+				// add tabs:
+				var tabs = '<ul id="report-tabs" class="nav nav-tabs">';
+					tabs = tabs + '<li><a href="#tab1" data-toggle="tab">Parcel Info</a></li>';
+					tabs = tabs + '<li><a href="#tab2" data-toggle="tab">Zoning Info</a></li>';
+					tabs = tabs + '<li><a href="#tab3" data-toggle="tab">Maps</a></li>';
+					tabs = tabs + "</ul>";
+					
+				// tab1: basic property information					
+				var tab1 = '<div class="tab-pane active" id="tab1">';
+					tab1 = tab1 + '<table class="table">';
+					tab1 = tab1 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
+					tab1 = tab1 + '<tbody>';
+					
+					$.each(parcel_attributes, function (i, item) {
+						
+						if($.inArray(item.Name,parcel_desired) != -1){
+							var item_label = item.Label;
+							var item_value = "";
+							if(item.Value){
+								item_value = item.Value;
+							}
+							tab1 = tab1 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
+						}
+						
+					});
+					
+					tab1 = tab1 + '</tbody></table></div>';
+				
+				// tab2: basic property information					
+				var tab2 = '<div class="tab-pane" id="tab2">';
+					tab2 = tab2 + '<table class="table">';
+					tab2 = tab2 + '<thead><tr><th>Label</th><th>Value</th></tr></thead>';
+					tab2 = tab2 + '<tbody>';
+					
+					$.each(zoning_attributes, function (i, item) {
+						
+						if($.inArray(item.Name,zoning_desired) != -1){
+							var item_label = item.Label;
+							var item_value = "";
+							if(item.Value){
+								item_value = item.Value;
+							}
+							tab2 = tab2 + '<tr><td>' + item_label+ '</td><td>' + item_value+ '</td></tr>';
+						}
+						
+					});
+					
+					tab2 = tab2 + '</tbody></table></div>';
+				
+				// tab3: google maps
+				var tab3 = '<div class="tab-pane" id="tab3">';
+					tab3 = tab3 + '<div id="map_carousel" class="carousel slide">';
+					tab3 = tab3 + '<ol class="carousel-indicators">';
+					tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="0" class="active"></li>';
+					tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="1"></li>';
+					tab3 = tab3 + '<li data-target="#map_carousel" data-slide-to="2"></li>';
+					tab3 = tab3 + '</ol>';
+					tab3 = tab3 + '<div class="carousel-inner">';
+					tab3 = tab3 + '<div class="active item">' + $.fn.googleImageMap(location, 'satellite') + '</div>';
+					tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'streetview') + '</div>';
+					tab3 = tab3 + '<div class="item">' + $.fn.googleImageMap(location, 'standard') + '</div>';
+					tab3 = tab3 + '</div>';
+					tab3 = tab3 + ' <a class="carousel-control left" href="#map_carousel" data-slide="prev">&lsaquo;</a>';
+					tab3 = tab3 + '<a class="carousel-control right" href="#map_carousel" data-slide="next">&rsaquo;</a>';
+					tab3 = tab3 + '</div>';
+					tab3 = tab3 + '</div><!-- /Close Tab3 -->';
+					
+				// add tabs to modal body	
+				ele.html(tabs+'<div class="tab-content">'+tab1+tab2+tab3+'</div>');
+				
+				$('#report-tabs a:first').tab('show');
+				
+				// Update a.map element with proper background image. Total hack but works.
+				$("#map_carousel a.map").each(function(){
+					var src = $(this).attr("href");
+					$(this).attr("style", "background-image:url('"+src+"')");
+				});
+								    
+			}else{
+				ele.html('<h3>No records found.</h3>');
+			}
+		});
 	};
 
 	// geoCodeLocator
-	$.fn.geoCodeLocator = function(location) {
+	$.fn.geoCodeLocator = function(phone, location) {
+		// vars
+		var result_count, title, block, parcel_id, x_coords, y_coords, xml, coord_str, popover_str, full_address_str, json;
 		
-		var results, title, block, parcel_id, x_coords, y_coords, xml, coord_str, popover_str, full_address_str;
-		
-		// call jsonp
-		$.getJSON(service,{action: 'geoCodeLocator', location: location}, function(data){
+		$.getJSON(service,{action: 'geoCodeLocator', location: location}, function(data){ // call jsonp
 			
-			// check if results
-			if(data.GeoCodeLocatorResult){
+			if(data.GeoCodeLocatorResult){ // check if results
 				result_count = parseInt(data.GeoCodeLocatorResult.ResultsCount);
-				 xml = data.GeoCodeLocatorResult.ResultsSet.any;
+				xml = data.GeoCodeLocatorResult.ResultsSet.any;
+	        	properties = [];
+	        	$(xml).find('AddressList').each(function(){ // build properties object
+	        		json = $.xml2json(this);
+	        		properties.push(json);
+	        	});
 			}else{
 				 result_count = 0;
 			}
@@ -410,29 +376,35 @@ $(function() {
 					block = block + '<th class="hidden-phone">City</th>';
 					block = block + '<th class="hidden-phone hidden-tablet">State</th>';
 					block = block + '<th class="hidden-phone">Zipcode</th>';
+					block = block + '<th class="hidden-phone">Condo</th>';
 					block = block + '</tr></thead><tbody>';
 					
-		        	$(xml).find('AddressList').each(function(){
-		        		// get cagis x & y coordianants for propery query
-		        		coord_str = $(this).find('X_COORD').text() + ',' + $(this).find('Y_COORD').text();
-		        		popover_str = $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
-		        		full_address_str = $(this).find('ADDRESS').text() + " " + $(this).find('BND_NAME').text() + ", " + $(this).find('STATE').text() + " " + $(this).find('ZIPCODE').text();
-		        		
-		        		// build display block
+					$.each(properties, function (i, property) {
+						coord_str = property.x_coord + ',' + property.x_coord;
+						popover_str = property.bnd_name + ", " + property.state + " " + property.zipcode;
+						full_address_str = property.address + " " + property.bnd_name + ", " + property.state + " " + property.zipcode;
+						
+						var condo = "No";
+						if(property.condoflg == "Y"){
+							condo = "Yes";
+						}
+
 		        		block = block + '<tr>';
 		        		block = block + '<td class="drag-drop hidden-phone"><a class="btn btn-move" href="#" alt="' + full_address_str + '" ><i class="icon-move"></i></a></td>';
-		        		block = block + '<td class="data-address"><a href="#" rel="' + coord_str + '" class="report">' + $(this).find('ADDRESS').text() + '</a>';
+		        		block = block + '<td class="data-address"><a href="#" rel="' + coord_str + '" class="report">' + property.address + '</a>';
 		        		block = block + '<span class="more-info-popover visible-phone hidden-desktop hidden-tablet">';
 		        		block = block + '<a class="btn btn-popover" href="#"\
-		        		data-title="' + $(this).find('ADDRESS').text() + '"\
+		        		data-title="' + property.address  + '"\
 		        		data-content="' + popover_str + '"\
 		        		data-placement="left">';
 		        		block = block + '<i class="icon-info-sign"></i></a></span></td>';
-		        		block = block + '<td class="data-city hidden-phone">' + $(this).find('BND_NAME').text() + '</td>';
-		        		block = block + '<td class="data-state hidden-phone hidden-tablet">' + $(this).find('STATE').text() + '</td>';
-		        		block = block + '<td class="data-zipcode hidden-phone">' + $(this).find('ZIPCODE').text() + '</td>';
+		        		block = block + '<td class="data-city hidden-phone">' + property.bnd_name + '</td>';
+		        		block = block + '<td class="data-state hidden-phone hidden-tablet">' + property.state  + '</td>';
+		        		block = block + '<td class="data-zipcode hidden-phone">' + property.zipcode  + '</td>';
+		        		block = block + '<td class="data-zipcode hidden-phone">' + condo  + '</td>';
 		        		block = block + '</tr>';
-		        	});
+						
+					});
 		        	
 		        	block = block + '</tbody></table>';
 		        	
