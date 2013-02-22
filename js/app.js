@@ -212,8 +212,9 @@ $(function() {
 		return this.submit(function(event){
 			event.preventDefault();
 			
+			
 			// get value of field in search form.
-			var location = $(':input[name=location]').val();
+			var location = $(this).find(':input[name=location]').val();
 			
 			// set loading true...
 			$.fn.loader(true);
