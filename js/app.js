@@ -8,42 +8,38 @@
 // GLOBAL VARS
 var server = 'robbhedrick.com/projects/web/cagis';
 var service = "http://" + server + "/jsonp.php?callback=?";
-var my_latitude = "";
-var my_longitude = "";
-var geocoder;
-var directionsService;
-var directionsDisplay;
-var map;
-var current;
-var oceanBeach;
+var latitude, longitude, latLng;
+var directionsSservice, directionsDisplay, geocoder, infowindow, map;
 
 
 // GEO CALLBACK
 function success_callback(p){
-	my_latitude = p.coords.latitude.toFixed(5);
-	my_longitude = p.coords.longitude.toFixed(5);
+	latitude = p.coords.latitude.toFixed(5);
+	longitude = p.coords.longitude.toFixed(5);
 	loadGooglMapScript();
 }
 
 // GOOGLE MAPS API
 function initialize() {
+  infowindow = new google.maps.InfoWindow();
   geocoder = new google.maps.Geocoder();
   directionsService = new google.maps.DirectionsService();
   directionsDisplay = new google.maps.DirectionsRenderer();
-  current = new google.maps.LatLng(my_latitude, my_longitude);
+  latLng = new google.maps.LatLng(latitude, longitude);
   var mapOptions = {
-    zoom: 14,
+    zoom: 10,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
-    center: current
+    center: latLng
   }
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
   directionsDisplay.setMap(map);
+  codeLatLng(latLng);
 }
 
 function calcRoute(location) {
   var selectedMode = document.getElementById("mode").value;
   var request = {
-      origin: current,
+      origin: latLng,
       destination: location,
       travelMode: google.maps.TravelMode[selectedMode]
   };
@@ -52,6 +48,25 @@ function calcRoute(location) {
       directionsDisplay.setDirections(response);
     }
   });
+}
+
+
+function codeLatLng(latlng) {
+	geocoder.geocode({'latLng': latlng}, function(results, status) {
+	  if (status == google.maps.GeocoderStatus.OK) {
+	    if (results[1]) {
+	      map.setZoom(18);
+	      marker = new google.maps.Marker({
+	          position: latlng,
+	          map: map
+	      });
+	      //infowindow.setContent(results[1].formatted_address);
+	      //infowindow.open(map, marker);
+	    }
+	  } else {
+	    alert("Geocoder failed due to: " + status);
+	  }
+	});
 }
 
 function codeAddress(address) {
@@ -73,7 +88,7 @@ function codeAddress(address) {
 function loadGooglMapScript(coords) {
   var script = document.createElement("script");
   script.type = "text/javascript";
-  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2qJnw4jka8jrjXLWpRqd2qz5fHgxFo&sensor=false&callback=initialize";
+  script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAG-2qJnw4jka8jrjXLWpRqd2qz5fHgxFo&sensor=true&callback=initialize";
   document.body.appendChild(script);
 }
 
@@ -211,7 +226,6 @@ $(function() {
 	$.fn.search = function() {
 		return this.submit(function(event){
 			event.preventDefault();
-			
 			
 			// get value of field in search form.
 			var location = $(this).find(':input[name=location]').val();
