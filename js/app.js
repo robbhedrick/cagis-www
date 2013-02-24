@@ -73,7 +73,8 @@ function gMapInitialize() {
 /**
   * Desc: 
 */
-function gMapCalcRoute(location) {
+function gMapCalcRoute() {
+  var location = document.getElementById("location").value;
   var selectedMode = document.getElementById("mode").value;
   var request = {
       origin: latLng,
@@ -119,7 +120,8 @@ function gMapCodeAddress(address) {
         		map: map,
         		position: results[0].geometry.location
         	});*/
-        	gMapCalcRoute(results[0].geometry.location);
+        	document.getElementById("location").value = results[0].geometry.location;
+        	gMapCalcRoute();
         } else {
     		alert("Geocode was not successful for the following reason: " + status);
     	}

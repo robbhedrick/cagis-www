@@ -63,16 +63,16 @@
 									<h1>Cincinnati Area Geographic Information System (CAGIS)</h1>
 									<div class="form">
 									<form class="search">
-										<input type="hidden" name="phone" value="false">
 										<input type="text" class="input-medium search-query" name="location"  value="Enter Street Address">
 										<button type="submit" class="btn">Search</button>
 										<img src="/img/searching.gif" class="loader"  style="display:none;"/ >
 									</form>
 									</div>
+									<input id="location" type="hidden" name="location" value="">
 									<div id="advanced-map-controls">
 										<div id="mode-of-trans">
 											<strong>Mode: </strong>
-											<select id="mode" onchange="calcRoute();">
+											<select id="mode" onchange="gMapCalcRoute('');">
 												<option value="DRIVING">Driving</option>
 												<option value="WALKING">Walking</option>
 												<option value="BICYCLING">Bicycling</option>
