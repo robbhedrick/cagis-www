@@ -7,7 +7,7 @@
 */
  
 // GLOBAL VARS & FUNCTIONS
-var server = 'robbhedrick.com/projects/web/cagis';
+var server = 'www.robbhedrick.com/projects/web/cagis';
 var service = "http://" + server + "/jsonp.php?callback=?";
 var latitude, longitude, latLng;
 var directionsSservice, directionsDisplay, geocoder, infowindow, map;
