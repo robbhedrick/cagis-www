@@ -382,7 +382,7 @@ $(function() {
 					block = block + '</tr></thead><tbody>';
 					
 					$.each(properties, function (i, property) {
-						coord_str = property.x_coord + ',' + property.x_coord;
+						coord_str = property.x_coord + ',' + property.y_coord;
 						popover_str = property.bnd_name + ", " + property.state + " " + property.zipcode;
 						full_address_str = property.address + " " + property.bnd_name + ", " + property.state + " " + property.zipcode;
 						
