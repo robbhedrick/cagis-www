@@ -377,8 +377,8 @@ $(function() {
 					block = block + '<th>Address</th>';
 					block = block + '<th class="hidden-phone">City</th>';
 					block = block + '<th class="hidden-phone hidden-tablet">State</th>';
-					block = block + '<th class="hidden-phone">Zipcode</th>';
-					block = block + '<th class="hidden-phone">Condo</th>';
+					block = block + '<th class="hidden-phone hidden-tablet">Zipcode</th>';
+					block = block + '<th class="hidden-phone hidden-tablet">Condo</th>';
 					block = block + '</tr></thead><tbody>';
 					
 					$.each(properties, function (i, property) {
@@ -402,8 +402,8 @@ $(function() {
 		        		block = block + '<i class="icon-info-sign"></i></a></span></td>';
 		        		block = block + '<td class="data-city hidden-phone">' + property.bnd_name + '</td>';
 		        		block = block + '<td class="data-state hidden-phone hidden-tablet">' + property.state  + '</td>';
-		        		block = block + '<td class="data-zipcode hidden-phone">' + property.zipcode  + '</td>';
-		        		block = block + '<td class="data-zipcode hidden-phone">' + condo  + '</td>';
+		        		block = block + '<td class="data-zipcode hidden-phone hidden-tablet">' + property.zipcode  + '</td>';
+		        		block = block + '<td class="data-zipcode hidden-phone hidden-tablet">' + condo  + '</td>';
 		        		block = block + '</tr>';
 						
 					});
